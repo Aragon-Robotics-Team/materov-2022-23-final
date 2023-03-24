@@ -4,8 +4,9 @@ from tkinter import *
 from tkinter import ttk
 
 #multiprocessing
-import multiprocessing 
-from nav import navGUI
+import multiprocessing
+from MegadonLo2023.GUI.nav import navGUI
+
 
 class GUIClass():
     def __init__(self):
