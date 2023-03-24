@@ -3,7 +3,7 @@ from MegadonLo2023.nav.Teleop.Teleop import Teleop
 
 
 '''
- initializes and creates Robot, Teleop object, begins teleop loop
+Initializes and creates Robot, Teleop object, begins teleop loop
 '''
 
 
