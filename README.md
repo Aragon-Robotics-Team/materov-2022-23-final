@@ -1,4 +1,4 @@
-Welcome to the repository for the Megadonlo MATE ROV robotics team of 2023.
+Welcome to the repository for the Megalodon MATE ROV robotics team of 2023.
 
 Team members:
 
