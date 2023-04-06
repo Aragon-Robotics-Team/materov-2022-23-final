@@ -1,9 +1,9 @@
 import pygame
-from OOPFinal.nav.Teleop import MathFunc
+from nav.Teleop import MathFuncNew
 from time import sleep
-from OOPFinal.nav.Teleop.Numbers import Numbers
-from OOPFinal.nav.Robot.Robot import Robot
-from OOPFinal.nav.Autonomous import Autonomous
+from nav.Teleop.Numbers import Numbers
+from nav.Robot.Robot import Robot
+# from nav.Autonomous import Autonomous
 
 class Teleop:
     def __init__(self, rob: Robot) -> None:
@@ -38,18 +38,15 @@ class Teleop:
         # ------ MATH CALC FUNCTION CALL ------ #
         while True:
             pygame.event.pump()
-            message = self.thruster_calculations(self.get_gamepad_states())
-            string_to_arduino = self.robot.make_string(message)
-            self.robot.get_send_arduino(string_to_arduino)
+            gamepad_states = self.get_gamepad_states()
+            message = self.thruster_calculations(gamepad_states)  # mathfunc
+            self.robot.get_send_arduino(message)
             period = self.check_queue()
             if period != 0:  # if the queue is saying to exit teleop
-                if period == 1:
-                    newauto = Autonomous.Autonomous1(rob)
-
-                    pass
-                if period ==1:
-                    # auto2(rob)
-                    pass
+                if period == 4:
+                    #add command to stop the thrusters
+                    pass 
+                break
 
             pygame.event.clear()
             sleep(self.robot.delay)
@@ -71,11 +68,11 @@ class Teleop:
         
         # gamepad_states = [shift x, shift y, yaw x, heave a, heave b]
         #variables here are for readability
-        shift_x = gamepad_states[0]
-        shift_y = gamepad_states[1]
-        yaw_x = gamepad_states[2]
-        heave_a = gamepad_states[3]
-        heave_b = gamepad_states[4]
+        shift_x = self.gamepad_states[self.numbers.shift_x]
+        shift_y = self.gamepad_states[self.numbers.shift_y]
+        yaw_x = self.gamepad_states[self.numbers.yaw_x]
+        heave_a = self.gamepad_states[self.numbers.heave_a]
+        heave_b = self.gamepad_states[self.numbers.heave_b]
         
         # ------ MATH CALCS ------ #
         message = MathFunc.makeCalc(shift_x, shift_y, yaw_x, heave_a, heave_b, 0)
@@ -102,9 +99,13 @@ class Teleop:
             # taking only the values that we need
             temp = [self.numbers.shift_x, self.numbers.shift_y, self.numbers.yaw_x, self.numbers.heave_a,
                     self.numbers.heave_b]
+            print(temp)
 
             for i in range(len(self.gamepad_states)):
                 self.gamepad_states.append(all_states[temp[i]])
+                print(self.gamepad_states)
+            
+            print(self.gamepad_states)
 
             return self.gamepad_states
 
