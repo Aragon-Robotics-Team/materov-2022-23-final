@@ -22,7 +22,6 @@ class Teleop:
 
         self.numbers = Numbers()
         self.gamepad_states = [] # list you send to MathFunc
-        # self.message = []  # list you eventually send to robot.get_send_arduino
         self.robot = rob
 
     def teleop_loop(self):
@@ -68,14 +67,14 @@ class Teleop:
         
         # gamepad_states = [shift x, shift y, yaw x, heave a, heave b]
         #variables here are for readability
-        shift_x = self.gamepad_states[self.numbers.shift_x]
-        shift_y = self.gamepad_states[self.numbers.shift_y]
-        yaw_x = self.gamepad_states[self.numbers.yaw_x]
-        heave_a = self.gamepad_states[self.numbers.heave_a]
-        heave_b = self.gamepad_states[self.numbers.heave_b]
+        shift_x = self.gamepad_states[0]
+        shift_y = self.gamepad_states[1]
+        yaw_x = self.gamepad_states[2]
+        heave_a = self.gamepad_states[3]
+        heave_b = self.gamepad_states[4]
         
         # ------ MATH CALCS ------ #
-        message = MathFunc.makeCalc(shift_x, shift_y, yaw_x, heave_a, heave_b, 0)
+        message = MathFuncNew.makeString(shift_x, shift_y, yaw_x, heave_a, heave_b, 100, 100)
         #  final SIX THRUSTER calculated values stored in "message" list ===>
 
         return message
@@ -101,9 +100,11 @@ class Teleop:
                     self.numbers.heave_b]
             print(temp)
 
-            for i in range(len(self.gamepad_states)):
-                self.gamepad_states.append(all_states[temp[i]])
-                print(self.gamepad_states)
+            # for i in range(len(self.gamepad_states)):
+            #     self.gamepad_states.append(all_states[temp[i]])
+            #     print(self.gamepad_states)
+
+            
             
             print(self.gamepad_states)
 
