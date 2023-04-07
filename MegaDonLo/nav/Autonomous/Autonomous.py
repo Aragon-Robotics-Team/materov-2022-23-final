@@ -1,6 +1,7 @@
 from multiprocessing import Queue
 from nav.Robot.Robot import Robot
-from ..Teleop.MathFunc import PWM, makeString
+from ..Teleop.MathFunc import PWM
+from ..Teleop.MathFuncNew import makeString
 from time import sleep
 
 class Autonomous():
@@ -12,7 +13,7 @@ class Autonomous():
 
         print('AUTONAVSIDE STARTED')
 
-        sleep(10)
+        # sleep(10)
         print ("asdf")
         while True:
             qList = self.rob.get_queue()
@@ -33,9 +34,8 @@ class Autonomous():
 
                 self.rob.get_send_arduino(sendStr)  # send to Robot arduino comm function
             # self.rob.get_send_arduino([1600, 1600, 1600, 1600, 1600, 1600])  # send to Robot arduino comm function
-
-            print("sent string")
-            # sleep(self.rob.delay)
+                # print("sent string")
+                print(sendStr)
 
 
     '''
@@ -49,6 +49,9 @@ class Autonomous():
     def transectLine(self, x: float, y: float) -> list:
         #def makeString(Lx, Ly, Rx, A, B, percent_horiz, percent_vert) 
         slider = 1
+        testing_queue_array = self.rob.get_testing_queue()
+        if len(testing_queue_array) != 0:
+            slider = 1/testing_queue_array[1]
         Lx=x*slider
         Ly=y*slider
         Rx=0
@@ -57,10 +60,7 @@ class Autonomous():
         percent_horiz=50
         percent_vert=50
 
-      
-        
         return(makeString(Lx, Ly, Rx, A, B, percent_horiz, percent_vert))
-
 
 
     '''
@@ -73,7 +73,11 @@ class Autonomous():
         '''
     def autoDocking(self, x: float, y: float) -> list:
         #def makeString(Lx, Ly, Rx, A, B, percent_horiz, percent_vert) 
+        # slider = self.rob.get_testing_queue()[1]
         slider = 1
+        testing_queue_array = self.rob.get_testing_queue()
+        if len(testing_queue_array) != 0:
+            slider = 1/testing_queue_array[0]
         Lx=1
         if(x>0):
             Lx=slider #left and right
@@ -93,4 +97,3 @@ class Autonomous():
         print("in nav autodocking")
         return makeString(Lx, Ly, Rx, A, B, percent_horiz, percent_vert) 
         
-    

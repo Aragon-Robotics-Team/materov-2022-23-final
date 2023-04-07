@@ -1,5 +1,6 @@
 from nav.Robot.Robot import Robot
 from nav.Teleop.Teleop import Teleop
+from nav.Autonomous.Autonomous import Autonomous
 
 import multiprocessing
 
@@ -7,10 +8,14 @@ import multiprocessing
 Initializes and creates Robot, Teleop object, begins teleop loop
 '''
 
-def run(queue_in, queue_out):
-    rob = Robot (queue_in, queue_out)
+def run(queue_in, queue_out, testing_queue):
+    rob = Robot (queue_in, queue_out, testing_queue)
+    print("Robot initialized")
     teleop = Teleop(rob)
-    # #auto = Autonomous(rob)
+    print("teleop initialized")
+    auto = Autonomous(rob)
+    print("autonomous initialized")
+
     print("Robot, Teleop, and Autonomous Objects Initialized")
 
     #loop checks whether or not to run teleop, autonomous docking, autonomous transect line, or none 
@@ -27,6 +32,8 @@ def run(queue_in, queue_out):
             if queue_array[0] == 1:
                 print("starting teleop")
                 teleop.teleop_loop()
+            if queue_array[0] == 2:
+                auto.begin_and_loop()
             #the autonomous object checks which autonomous task is being completed 
             # elif queue_array[0] == 2 or queue_array[0] == 3:
             #     auto.begin_and_loop()

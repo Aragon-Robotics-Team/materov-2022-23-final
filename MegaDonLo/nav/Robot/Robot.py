@@ -12,11 +12,12 @@ from multiprocessing import Queue
 
 class Robot:
 
-    def __init__(self, queue_in: Queue, queue_out: Queue) -> None:  # gui creates object bot and interacts with it
+    def __init__(self, queue_in: Queue, queue_out: Queue, testing_queue: Queue) -> None:  # gui creates object bot and interacts with it
         # self.gamepad = pygame.joystick.Joystick(0)
         # self.gamepad.init()
         self.queue_in = queue_in
         self.queue_out = queue_out
+        self.testing_queue = testing_queue
         self.portNum = 1101
         self.baudRate = 9600
         self.delay = 0.05
@@ -74,6 +75,15 @@ class Robot:
         # print('gotten from queue: ')
 
         return obj
+
+
+    #queue specifically for variables that are solely for testing (e.g. slider for autonomous)
+    def get_testing_queue(self):
+        obj = []
+        while self.testing_queue.empty() == False:
+            obj = self.testing_queue.get()
+
+        return obj 
 
     '''
     list received from queue: 
