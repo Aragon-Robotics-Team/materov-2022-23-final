@@ -23,7 +23,7 @@ def autodockinit(img_path):
 #from autodock1 import autodockingloop
 #self.AutoDockingB = Button(self.root, text = "Auto Docking Live", command = lambda: autodockingloop(self.cap))
 #self.AutoDockingB.grid(row = 3, column = self.vcol + 1, sticky = 'n')
-def autodockingloop(cap, nav_queue, camerafeedpath):
+def autodockingloop(cap, nav_queue):
     videocap = cap
     autodockingimgpath = "/Users/valeriefan/Desktop/MATE ROV 2023 /autodockingloop.jpg"
     #tracking the docking button in the live video feed 
@@ -31,7 +31,7 @@ def autodockingloop(cap, nav_queue, camerafeedpath):
         cv2.imwrite(autodockingimgpath, videocap.read()[1])
         # cv2.imwrite(autodockingimgpath, cv2.imread(camerafeedpath))
         contours, cX, cY = autodocking(autodockingimgpath)
-        # cv2.imshow("Contours", contours)
+        cv2.imshow("Contours", contours)
         vY = cY - contours.shape[0]
         vX = cX - contours.shape[1]
         queueArray = [2, vX, vY]
@@ -40,6 +40,7 @@ def autodockingloop(cap, nav_queue, camerafeedpath):
         #calculatethrust(cX, cY)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             cv2.destroyAllWindows
+            print("autonomous docking ended")
             break
         # cv2.waitKey(0)
 
@@ -56,6 +57,8 @@ def autodocking(img_path):
     upper = np.array((B + 15, G + 15, R + 25), dtype = "uint8")
 
     image = cv2.imread(img_path)
+    if image is None:
+        print("no image in path")
 
     #blur, mask and grayscale the image --- mask everything but the red circle 
     blurImg = cv2.blur(image,(10,10)) 

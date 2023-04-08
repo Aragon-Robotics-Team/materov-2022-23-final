@@ -57,10 +57,7 @@ class GUIClass():
         self.autonomous_docking_init = Button(self.root, text = "Initialize Auto Docking", command = lambda: autodockinit(self.snapshot()))
         self.autonomous_docking_init.grid(row = 3, column = self.vcol + 1, sticky = 'n')
 
-        self.autonomous_docking_p = Button(self.root, text = "Auto Docking Live Process", command = lambda: navGUI.start_autonomous_docking_p(self.gui_nav, self.nav_gui, self.testing_queue, self, self.camerafeedpath))
-        self.autonomous_docking_p.grid(row = 4, column = self.vcol + 1, sticky = 'n')
-
-        self.autonomous_docking = Button(self.root, text = "Auto Docking Live", command = lambda: navGUI.start_autonomous_docking(self, self.gui_nav, self.camerafeedpath))
+        self.autonomous_docking = Button(self.root, text = "Auto Docking Live", command = lambda: navGUI.start_autonomous_docking(self, self.gui_nav))
         self.autonomous_docking.grid(row = 5, column = self.vcol + 1, sticky = 'n')
 
 
@@ -90,6 +87,7 @@ class GUIClass():
     def showFrames(self):
         self.camerafeedpath = "/Users/valeriefan/Desktop/MATE ROV 2023 /camerafeed.jpg"
         cv2.imwrite(self.camerafeedpath, self.cap.read()[1])
+
         cv2image= cv2.cvtColor(cv2.imread(self.camerafeedpath) ,cv2.COLOR_BGR2RGB)
         # cv2image= cv2.cvtColor(self.cap.read()[1],cv2.COLOR_BGR2RGB)
         #error is fine 
@@ -100,6 +98,7 @@ class GUIClass():
         self.videolabel.imgtk = imgtk
         self.videolabel.configure(image=imgtk)
         # Repeat after an interval to capture continiously
+
         self.videolabel.after(20, self.showFrames)
 
     def snapshot(self):
@@ -109,10 +108,11 @@ class GUIClass():
     def send_testing_queue(self):
         #send through queue
         self.coeffs = [self.autodocking_slider.get(), self.autoline_slider.get()]
-        self.nav_in_queue.put(self.coeffs)
+        # print(self.coeffs)
+        self.testing_queue.put(self.coeffs)
 
         #loop every 20 ms
-        self.root.after(20, lambda: self.sendThroughQueue())
+        self.root.after(20, lambda: self.send_testing_queue())
 
     def run(self):
         while True:
@@ -121,5 +121,6 @@ class GUIClass():
 if __name__ == "__main__":
     gui = GUIClass()
     gui.showFrames()
+    gui.send_testing_queue()
     gui.run()
 

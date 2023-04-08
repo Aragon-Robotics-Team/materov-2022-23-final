@@ -5,9 +5,10 @@ from ..Teleop.MathFuncNew import makeString
 from time import sleep
 
 class Autonomous():
-    def __init__(self, rob: Robot):
+    def __init__(self, rob: Robot, testing_queue):
 
         self.rob = rob
+        self.testing_queue = testing_queue
 
     def begin_and_loop(self):  # Main Loop of Autonomous
 
@@ -21,6 +22,7 @@ class Autonomous():
                 # print("Auto queue yes")
                 print(qList)
                 whichAuto = qList[0]
+                # if len(qList) != 0:  #sometimes breaks in the middle 
                 x = round(qList[1], 2)  # round vector component to 2 decimal places
                 y = round(qList[2], 2)
 
@@ -71,13 +73,19 @@ class Autonomous():
         output: 
             list of size 6: [fr, fl, br, bl, v1, v2]
         '''
+    slider = 1
     def autoDocking(self, x: float, y: float) -> list:
+        global slider 
         #def makeString(Lx, Ly, Rx, A, B, percent_horiz, percent_vert) 
         # slider = self.rob.get_testing_queue()[1]
-        slider = 1
-        testing_queue_array = self.rob.get_testing_queue()
-        if len(testing_queue_array) != 0:
-            slider = 1/testing_queue_array[0]
+
+        while self.testing_queue.empty() == False:
+            slider = 1/self.testing_queue.get()[0]
+        print(slider)
+        # testing_queue_array = self.rob.get_testing_queue()
+        # if len(testing_queue_array) != 0:
+        #     slider = 1/testing_queue_array[0]
+        #     print(slider)
         Lx=1
         if(x>0):
             Lx=slider #left and right

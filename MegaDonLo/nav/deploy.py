@@ -13,7 +13,7 @@ def run(queue_in, queue_out, testing_queue):
     print("Robot initialized")
     teleop = Teleop(rob)
     print("teleop initialized")
-    auto = Autonomous(rob)
+    auto = Autonomous(rob, testing_queue)
     print("autonomous initialized")
 
     print("Robot, Teleop, and Autonomous Objects Initialized")
