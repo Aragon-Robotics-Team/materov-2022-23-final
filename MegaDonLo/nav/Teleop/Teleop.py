@@ -1,7 +1,7 @@
 import pygame
 from time import sleep
 
-from nav.Teleop import MathFuncNew
+from nav.Teleop import MathFunc
 from nav.Teleop.Numbers import Numbers
 from nav.Robot.Robot import Robot
 from nav.Autonomous import Autonomous
@@ -62,6 +62,7 @@ class Teleop:
 
             # ------ MATH CALCS ------ #
             pwmArray = MathFunc.makeString(shift_x, shift_y, yaw_x, heave_a, heave_b, 100, 100)
+            print(pwmArray)
 
             # ds_pwm = round((1500 + ((drive_straight ** 1.5) * 350)))
             #
@@ -78,8 +79,8 @@ class Teleop:
                        str(pwmArray[4]) + "," +
                        str(pwmArray[5]) + ".")
 
-            # self.robot.get_send_arduino(sendStr)
-            print(pwmArray)
+            self.robot.get_send_arduino(sendStr)
+
             period = self.check_queue()
             if period != 0:  # if the queue is saying to exit teleop
                 if period == 4:
