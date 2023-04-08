@@ -64,6 +64,7 @@ class Teleop:
             pwmArray = MathFunc.makeString(shift_x, shift_y, yaw_x, heave_a, heave_b, 100, 100)
             print(pwmArray)
 
+            # drive straight function:
             # ds_pwm = round((1500 + ((drive_straight ** 1.5) * 350)))
             #
             # pwmArray[0] = ds_pwm
