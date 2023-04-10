@@ -9,20 +9,12 @@ G = 0
 R = 0
 
 #--------------------------
-#ASSOCIATED GUI CODE:  
-#from autodock1 import autodockinit
-#self.AutoDockInitB = Button(self.root, text = "Initialize Auto Docking", command = lambda: autodockinit(self.snapshot()))
-#self.AutoDockInitB.grid(row = 1, column = self.vcol + 1, sticky = 'n')
 def autodockinit(img_path):
     #find the color of the target in order to create a range for our mask in autodocking()
     global B, G, R
     B,G,R = colorSelector(img_path)
 
 #---------------------------
-#ASSOCIATED GUI CODE: 
-#from autodock1 import autodockingloop
-#self.AutoDockingB = Button(self.root, text = "Auto Docking Live", command = lambda: autodockingloop(self.cap))
-#self.AutoDockingB.grid(row = 3, column = self.vcol + 1, sticky = 'n')
 def autodockingloop(cap, nav_queue):
     videocap = cap
     autodockingimgpath = "/Users/valeriefan/Desktop/MATE ROV 2023 /autodockingloop.jpg"

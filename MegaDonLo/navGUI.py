@@ -7,6 +7,10 @@ import nav.deploy
 
 from imageProcessing.AutonomousDocking.AutonomousDocking import autodockingloop
 
+from nav.Autonomous.Autonomous import Autonomous
+from nav.Robot.Robot import Robot 
+
+
 navOn = False
 
 class NavProcess(multiprocessing.Process):
@@ -47,3 +51,15 @@ def start_autonomous_docking(gui_obj, gui_nav):
     if navOn == True:
         gui_obj.mode = "autonomous docking"
         autodockingloop(gui_obj.cap, gui_nav)
+
+def testing_auto():
+    queue = multiprocessing.Queue()
+    rob = Robot (queue, queue, queue)
+    auto = Autonomous(rob, queue)
+    print(auto.autoDocking(100, 100))
+    print(auto.autoDocking(500, 500))
+    print(auto.autoDocking(1000, 1000))
+    print(auto.autoDocking(1500, 1500))
+
+
+
