@@ -58,7 +58,7 @@ class Teleop:
             yaw_x = all_gp_states[self.numbers.yaw_x]
             heave_a = all_gp_states[self.numbers.heave_a]
             heave_b = all_gp_states[self.numbers.heave_b]
-            drive_straight = -all_gp_states[2]  # temporary thing to try with the straight forward/back on big gp
+            drive_straight = all_gp_states[2] * -1  # temporary thing to try with the straight forward/back on big gp
 
             # ------ MATH CALCS ------ #
             pwmArray = MathFunc.makeString(shift_x, shift_y, yaw_x, heave_a, heave_b, 100, 100)
