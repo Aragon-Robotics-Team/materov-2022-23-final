@@ -18,14 +18,13 @@ class Robot:
         self.queue_in = queue_in
         self.queue_out = queue_out
         self.testing_queue = testing_queue
-        self.portNum = 1101
+        self.portNum = 14301
         self.baudRate = 9600
-        self.delay = 0.05
-        # self.arduino = serial.Serial(port=f'/dev/cu.usbmodem{self.portNum}',
-        #                              baudrate=self.baudRate,
-        #                              timeout=1)
+        self.delay = 0.1
+        self.arduino = serial.Serial(port=f'/dev/cu.usbmodem{self.portNum}',
+                                     baudrate=self.baudRate,
+                                     timeout=1)
         sleep(1)
-
 
     def get_send_arduino(self, ls: list):
         sendStr = (str(ls[0]) + "-" +
@@ -34,13 +33,15 @@ class Robot:
                    str(ls[3]) + "*" +
                    str(ls[4]) + "," +
                    str(ls[5]) + ".")
-        print(sendStr)
-        # self.arduino.write(sendStr.encode("ascii"))  # write (output) to arduino
-        # while self.arduino.in_waiting == 0:
-        #     pass
-        # received_data_list = self.arduino.readline().decode("ascii").split(',')  # read input from arduino
-        # self.put_queue(received_data_list)
+        # print("sending:", sendStr)
+        self.arduino.write(sendStr.encode("ascii"))  # write (output) to arduino
+        while self.arduino.in_waiting == 0:
+            pass
+        # print(self.arduino.in_waiting)
 
+        received_data_list = self.arduino.readline().decode("ascii").split(',')  # read input from arduino
+        # print("recieving:", received_data_list, '\n\n')
+        # self.put_queue(received_data_list)
 
     def get_queue(self):
         obj = []
@@ -58,7 +59,6 @@ class Robot:
 
     def put_queue(self, obj: list):
         self.queue_out.put(obj)
-
 
     #queue specifically for variables that are solely for testing (e.g. slider for autonomous)
     def get_testing_queue(self):

@@ -62,7 +62,7 @@ def makeString(Lx, Ly, Rx, A, B, percent_horiz, percent_vert):
 
     # pwmArray[4] = pwmArray[4]
     # sends the PWM values in the order:
-    # fr, fl, br, bl, v1, v2
+    # rf, lf, rb, lb, v1, v2
     sendStr = (str(pwmArray[0]) + "-" +
                str(pwmArray[1]) + "=" +
                str(pwmArray[2]) + "+" +

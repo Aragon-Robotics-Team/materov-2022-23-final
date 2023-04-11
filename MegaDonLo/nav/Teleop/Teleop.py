@@ -1,10 +1,10 @@
 import pygame
 from time import sleep
 
-from nav.Teleop import MathFunc
-from nav.Teleop.Numbers import Numbers
-from nav.Robot.Robot import Robot
-from nav.Autonomous import Autonomous
+from MegaDonLo.nav.Teleop import MathFunc
+from MegaDonLo.nav.Teleop.Numbers import Numbers
+from MegaDonLo.nav.Robot.Robot import Robot
+from MegaDonLo.nav.Autonomous import Autonomous
 
 # COMMENT OUT SANNIE IMPORTS:
 #
@@ -17,17 +17,17 @@ class Teleop:
     def __init__(self, rob: Robot) -> None:
         #### Pygame initialization
         pygame.init()
-        # pygame.joystick.init()
+        pygame.joystick.init()
         # pygame.display.init()
-        # while True:
-        #     pygame.event.get()
-        #     print("Gamepad is disconnected")
-        #     if pygame.joystick.get_count() > 0:
-        #         break
-        # self.gamepad = pygame.joystick.Joystick(0)
-        # self.gamepad.init()
-        # self.controller_name = self.gamepad.get_name()
-        # print("Pygame initialized. Controller name:" + self.controller_name)
+        while True:
+            pygame.event.get()
+            print("Gamepad is disconnected")
+            if pygame.joystick.get_count() > 0:
+                break
+        self.gamepad = pygame.joystick.Joystick(0)
+        self.gamepad.init()
+        self.controller_name = self.gamepad.get_name()
+        print("Pygame initialized. Controller name:" + self.controller_name)
 
         self.numbers = Numbers()
         # self.gamepad_states = [] # list you send to MathFunc
@@ -52,42 +52,41 @@ class Teleop:
 
             all_gp_states = self.get_gamepad_states()  # stores all the states of the gamepad into an array
 
-            shift_x = all_gp_states[
-                self.numbers.shift_x]  # calculates the states of the speecified things we need based on what controller we have
+            shift_x = all_gp_states[self.numbers.shift_x]  # calculates the states of the speecified things we need based on what controller we have
             shift_y = all_gp_states[self.numbers.shift_y]
             yaw_x = all_gp_states[self.numbers.yaw_x]
             heave_a = all_gp_states[self.numbers.heave_a]
             heave_b = all_gp_states[self.numbers.heave_b]
-            drive_straight = all_gp_states[2] * -1  # temporary thing to try with the straight forward/back on big gp
+            # temporary straight forward/back to try with left stick
 
             # ------ MATH CALCS ------ #
             pwmArray = MathFunc.makeString(shift_x, shift_y, yaw_x, heave_a, heave_b, 100, 100)
+
+            # ------ TEMPORARY LEFT STICK STRAIGHT FORWARD/BACK CALCS ------ #
+            drive_straight = all_gp_states[2] * -1
+
+            if abs(drive_straight) > 0.1:  # deadband of 0.1 for left stick
+
+                # drive straight function:
+                ds_pwm = round(((abs(drive_straight) ** 1.5) * (drive_straight / abs(drive_straight)) * 350))
+
+                pwmArray[0] += ds_pwm
+                pwmArray[1] += ds_pwm
+                pwmArray[2] += ds_pwm
+                pwmArray[3] += ds_pwm
+
             print(pwmArray)
 
-            # drive straight function:
-            # ds_pwm = round((1500 + ((drive_straight ** 1.5) * 350)))
-            #
-            # pwmArray[0] = ds_pwm
-            # pwmArray[1] = ds_pwm
-            # pwmArray[2] = ds_pwm
-            # pwmArray[3] = ds_pwm
+            self.robot.get_send_arduino(pwmArray)
 
-            #  final SIX THRUSTER calculated values stored in "message" list ===>
-            sendStr = (str(pwmArray[0]) + "-" +
-                       str(pwmArray[1]) + "=" +
-                       str(pwmArray[2]) + "+" +
-                       str(pwmArray[3]) + "*" +
-                       str(pwmArray[4]) + "," +
-                       str(pwmArray[5]) + ".")
-
-            self.robot.get_send_arduino(sendStr)
-
-            period = self.check_queue()
-            if period != 0:  # if the queue is saying to exit teleop
-                if period == 4:
-                    #add command to stop the thrusters
-                    pass 
-                break
+            queue_message = self.check_queue()
+            if len(queue_message) > 0:
+                period = self.check_queue()[0]
+                if period != 0:  # if the queue is saying to exit teleop
+                    if period == 4:
+                        self.robot.get_send_arduino([1500,1500,1500,1500,1500,1500])
+                        pass
+                    break
 
             pygame.event.clear()
             sleep(self.robot.delay)
@@ -129,7 +128,9 @@ class Teleop:
         return gp_states
 
     def check_queue(self):
-        array = self.robot.get_queue()
-        return array[0]
+        obj = []
+        while not self.robot.queue_out.empty():
+            obj = self.robot.queue_out.get()
 
+        return obj
 

@@ -41,7 +41,7 @@ void setup() {
 
 void loop() {
 
-  if(Serial.available())
+  if(Serial.available()){
 
     //getting PWM values pyserial 1300-1300=1300+1300*1300,1300.
     RF_PWM = Serial.readStringUntil('-').toInt();
@@ -52,10 +52,10 @@ void loop() {
     v2 = Serial.readStringUntil('.').toInt();
 
     //send pwm values to thrusters
-    LF_T.writeMicroseconds(LF_PWM);
-    LB_T.writeMicroseconds(LB_PWM);
     RF_T.writeMicroseconds(RF_PWM);
+    LF_T.writeMicroseconds(LF_PWM);
     RB_T.writeMicroseconds(RB_PWM);
+    LB_T.writeMicroseconds(LB_PWM);
     L_VERT.writeMicroseconds(v1);
     R_VERT.writeMicroseconds(v2);
 
@@ -67,14 +67,16 @@ void loop() {
 //                   "V1: " + String(v1) + ", " +
 //                   "V2: " + String(v2));
 
-    Serial.println(String(RB_PWM) + "," +
-    String(RB_PWM) + "," + 
-    String(LF_PWM) + "," + 
-    String(LB_PWM) + "," + 
+    Serial.println(
     String(RF_PWM) + "," + 
+    String(LF_PWM) + "," + 
+    String(((RB_PWM - 1500) * (-1)) + 1500) + "," + 
+    String(LB_PWM) + "," + 
     String(v1) + "," + 
     String(v2));
 
     delay(50);
+
+  }
 
 }
