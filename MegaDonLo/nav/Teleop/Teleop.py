@@ -1,10 +1,10 @@
 import pygame
 from time import sleep
 
-from MegaDonLo.nav.Teleop import MathFunc
-from MegaDonLo.nav.Teleop.Numbers import Numbers
-from MegaDonLo.nav.Robot.Robot import Robot
-from MegaDonLo.nav.Autonomous import Autonomous
+from nav.Teleop import MathFunc
+from nav.Teleop.Numbers import Numbers
+from nav.Robot.Robot import Robot
+from nav.Autonomous import Autonomous
 
 # COMMENT OUT SANNIE IMPORTS:
 #
@@ -75,13 +75,13 @@ class Teleop:
                 pwmArray[2] += ds_pwm
                 pwmArray[3] += ds_pwm
 
-            print(pwmArray)
+            # print(pwmArray)
 
             self.robot.get_send_arduino(pwmArray)
 
-            queue_message = self.check_queue()
+            queue_message = self.rob.get_queue()
             if len(queue_message) > 0:
-                period = self.check_queue()[0]
+                period = queue_message[0]
                 if period != 0:  # if the queue is saying to exit teleop
                     if period == 4:
                         self.robot.get_send_arduino([1500,1500,1500,1500,1500,1500])
@@ -127,10 +127,10 @@ class Teleop:
 
         return gp_states
 
-    def check_queue(self):
-        obj = []
-        while not self.robot.queue_out.empty():
-            obj = self.robot.queue_out.get()
+    # def check_queue(self):
+    #     obj = []
+    #     while not self.robot.queue_out.empty():
+    #         obj = self.robot.queue_out.get()
 
-        return obj
+    #     return obj
 

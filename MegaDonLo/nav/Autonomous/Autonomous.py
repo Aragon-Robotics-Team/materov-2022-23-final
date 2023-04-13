@@ -14,7 +14,7 @@ class Autonomous():
 
         print('AUTONAVSIDE STARTED')
 
-        # sleep(10)
+        sleep(10)
         print ("asdf")
         while True:
             qList = self.rob.get_queue()
@@ -78,8 +78,10 @@ class Autonomous():
     def autoDocking(self, x: float, y: float) -> list:
         global slider 
         slider = 1
-        while self.testing_queue.empty() == False:
-            slider = 1/self.testing_queue.get()[0]
+        # while self.testing_queue.empty() == False:
+        #     slider = 1/self.testing_queue.get()[0]
+        if len(self.rob.get_queue()) > 0:
+            slider = 1/self.rob.get_queue()[0]
         print(slider)
         Lx=1
         if(x>0):

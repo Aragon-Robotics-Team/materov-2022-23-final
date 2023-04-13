@@ -18,12 +18,14 @@ class Robot:
         self.queue_in = queue_in
         self.queue_out = queue_out
         self.testing_queue = testing_queue
-        self.portNum = 14301
+        self.portNum = 21201
         self.baudRate = 9600
         self.delay = 0.1
         self.arduino = serial.Serial(port=f'/dev/cu.usbmodem{self.portNum}',
                                      baudrate=self.baudRate,
                                      timeout=1)
+        self.message = []
+        self.testingmessage = []
         sleep(1)
 
     def get_send_arduino(self, ls: list):
@@ -44,13 +46,12 @@ class Robot:
         # self.put_queue(received_data_list)
 
     def get_queue(self):
-        obj = []
         while self.queue_in.empty() == False:
-            obj = self.queue_in.get()
+            self.obj = self.queue_in.get()
 
         # print('gotten from queue: ')
 
-        return obj
+        return self.obj
 
     '''
     list received from queue: 
@@ -62,11 +63,9 @@ class Robot:
 
     #queue specifically for variables that are solely for testing (e.g. slider for autonomous)
     def get_testing_queue(self):
-        obj = []
         while self.testing_queue.empty() == False:
-            obj = self.testing_queue.get()
-
-        return obj 
+            self.testingmessage = self.testing_queue.get()
+        return self.testingmessage 
 
 
 if __name__ == '__main__':

@@ -33,6 +33,7 @@ def autodockingloop(cap, nav_queue):
         if cv2.waitKey(1) & 0xFF == ord('q'):
             cv2.destroyAllWindows
             print("autonomous docking ended")
+            nav_queue.put([1, 0 ,0])
             break
         # cv2.waitKey(0)
 

@@ -32,7 +32,8 @@ def run(queue_in, queue_out, testing_queue):
     while loop:
         while queue_in.empty():          # if there's nothing in the queue
             pass                         # wait
-        queue_array = queue_in.get()     # until there is something
+        # queue_array = queue_in.get()     # until there is something
+        queue_array = rob.get_queue()
         if queue_array[0] != 0:
             if queue_array[0] == 4:
                 loop = False

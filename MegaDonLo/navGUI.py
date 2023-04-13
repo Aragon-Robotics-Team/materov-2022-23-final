@@ -50,16 +50,19 @@ def start_autonomous_docking(gui_obj, gui_nav):
     global navOn
     if navOn == True:
         gui_obj.mode = "autonomous docking"
-        autodockingloop(gui_obj.cap, gui_nav)
+        autodockingloop(gui_obj.cap2, gui_nav)
 
-def testing_auto():
-    queue = multiprocessing.Queue()
-    rob = Robot (queue, queue, queue)
-    auto = Autonomous(rob, queue)
-    print(auto.autoDocking(100, 100))
-    print(auto.autoDocking(500, 500))
-    print(auto.autoDocking(1000, 1000))
-    print(auto.autoDocking(1500, 1500))
+def end_autonomous(gui_nav):
+    gui_nav.put([1, 0 ,0])
+
+# def testing_auto():
+#     queue = multiprocessing.Queue()
+#     rob = Robot (queue, queue, queue)
+#     auto = Autonomous(rob, queue)
+#     print(auto.autoDocking(100, 100))
+#     print(auto.autoDocking(500, 500))
+#     print(auto.autoDocking(1000, 1000))
+#     print(auto.autoDocking(1500, 1500))
 
 
 

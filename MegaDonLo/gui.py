@@ -30,6 +30,7 @@ class GUIClass():
 
         #video feed 
         self.cap = cv2.VideoCapture(0)
+        self.cap2 = cv2.VideoCapture(1)
 
         # self.videolabel = Label(self.root, height = 800, width = 1000) ##CHANGE SO THE FULL VIDEO IS SHOWN 
         # self.videolabel.grid(row = 0, column = 0, rowspan = self.vrow, columnspan = self.vcol, sticky = 'n')
@@ -60,6 +61,9 @@ class GUIClass():
         self.autonomous_docking = Button(self.root, text = "Auto Docking Live", command = lambda: navGUI.start_autonomous_docking(self, self.gui_nav))
         self.autonomous_docking.grid(row = 5, column = self.vcol + 1, sticky = 'n')
 
+        self.end_autonomous = Button(self.root, text = "end autonomous", command = lambda: navGUI.end_autonomous(self.gui_nav))
+        self.end_autonomous.grid(row = 6, column = self.vcol + 1, sticky = 'n')
+
 
         #autonomous testing 
         self.testing_queue = multiprocessing.Queue()
@@ -68,23 +72,23 @@ class GUIClass():
         self.autodocking_slider= DoubleVar(self.root, value = 5)
         self.autoline_slider = DoubleVar(self.root, value = 5)
 
-        Label(self.root, text = "_________________________________").grid(row = 6, column = self.vcol + 1, sticky = 'n')
-        Label(self.root, text = "Autonomous Docking Slider").grid(row = 7, column = self.vcol + 1, sticky = 'n')
+        Label(self.root, text = "_________________________________").grid(row = 7, column = self.vcol + 1, sticky = 'n')
+        Label(self.root, text = "Autonomous Docking Slider").grid(row = 8, column = self.vcol + 1, sticky = 'n')
         BRight = Scale(self.root, variable = self.autodocking_slider, from_ = 1, to = 1000, orient = HORIZONTAL, length = 200)
-        BRight.grid(row = 8, column = self.vcol + 1, sticky = 'n')
-        Label(self.root, text = "_________________________________").grid(row = 9, column = self.vcol + 1, sticky = 'n')
+        BRight.grid(row = 9, column = self.vcol + 1, sticky = 'n')
+        Label(self.root, text = "_________________________________").grid(row = 10, column = self.vcol + 1, sticky = 'n')
 
-        Label(self.root, text = "Autonomous Transect Line Slider").grid(row = 10, column = self.vcol + 1, sticky = 'n')
+        Label(self.root, text = "Autonomous Transect Line Slider").grid(row = 11, column = self.vcol + 1, sticky = 'n')
         BLeft = Scale(self.root, variable = self.autoline_slider, from_ = 1, to = 1000, orient = HORIZONTAL, length = 200)
-        BLeft.grid(row = 11, column = self.vcol + 1, sticky = 'n')
-        Label(self.root, text = "_________________________________").grid(row = 12, column = self.vcol + 1, sticky = 'n')
+        BLeft.grid(row = 12, column = self.vcol + 1, sticky = 'n')
+        Label(self.root, text = "_________________________________").grid(row = 13, column = self.vcol + 1, sticky = 'n')
 
         # self.autodocking_test = Button(self.root, text = "autodocking test", command = navGUI.testing_auto)
         # self.autodocking_test.grid(row = 12, column = self.vcol + 1, sticky = 'n')
 
         #Nav Mode 
         self.mode_label = Label(self.root, text = self.mode)
-        self.mode_label.grid(row = 13, column = self.vcol + 1)
+        self.mode_label.grid(row = 14, column = self.vcol + 1)
         
 
         #insert Button/Label 
@@ -106,7 +110,7 @@ class GUIClass():
         self.videolabel.after(20, self.showFrames)
 
     def snapshot(self):
-        cv2.imwrite("/Users/valeriefan/Desktop/MATE ROV 2023 /videosnapshot.png", self.cap.read()[1])
+        cv2.imwrite("/Users/valeriefan/Desktop/MATE ROV 2023 /videosnapshot.png", self.cap2.read()[1])
         return("/Users/valeriefan/Desktop/MATE ROV 2023 /videosnapshot.png") 
     
     def update_mode_label(self):
