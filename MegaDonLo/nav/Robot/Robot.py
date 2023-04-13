@@ -47,11 +47,11 @@ class Robot:
 
     def get_queue(self):
         while self.queue_in.empty() == False:
-            self.obj = self.queue_in.get()
+            self.message = self.queue_in.get()
 
         # print('gotten from queue: ')
 
-        return self.obj
+        return self.message
 
     '''
     list received from queue: 

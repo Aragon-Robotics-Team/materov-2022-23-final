@@ -4,13 +4,13 @@ def PWM(joyVal):  # converting a double to a PWM value
     return joyVal
 
 
-def makeString(Lx, Ly, Rx, A, B, percent_horiz, percent_vert):
+def makeString(Lx, Ly, Rx, A, B, percent_horiz, percent_vert, rob):
     # Lx-Double/float, Ly-Double/float, Rx-Double/float, A-Boolean, B-Boolean, "Sensitive Mode" - Boolean
     v1 = v2 = fr = fl = br = bl = 1500
     sendStr = ""  # constructed string to be sent to the arduino
-    capMovement = 400 * (percent_horiz / 100)
-    capPivot = 400 * (percent_horiz / 100)
-    Vstrength = 400 * (percent_vert / 100)
+    capMovement = 400 * (percent_horiz / 100) * rob.get_testing_queue()[2]/100
+    capPivot = 400 * (percent_horiz / 100) * rob.get_testing_queue()[3]/100
+    Vstrength = 400 * (percent_vert / 100) * rob.get_testing_queue()[4]/100
 
     Ly = Ly * (-1)
     Lx = Lx * (1)
@@ -24,7 +24,7 @@ def makeString(Lx, Ly, Rx, A, B, percent_horiz, percent_vert):
 
     # LINEAR MODE
     # Front and Back Calculations (cap is 200)
-    br += PWM(Ly) * (capMovement / 400)
+    br += PWM(Ly) * (capMovement / 400) 
     bl += PWM(Ly) * (capMovement / 400)
     fr += PWM(Ly) * (capMovement / 400)
     fl += PWM(Ly) * (capMovement / 400)
