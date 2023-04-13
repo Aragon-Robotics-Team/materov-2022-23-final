@@ -2,11 +2,11 @@
 #basic gui imports
 from tkinter import *
 from tkinter import ttk
+from tkinter.simpledialog import askinteger
 
 #video feed
 import cv2
 from PIL import Image, ImageTk 
-
 
 #multiprocessing
 import multiprocessing
@@ -30,7 +30,12 @@ class GUIClass():
 
         #video feed 
         self.cap = cv2.VideoCapture(0)
-        self.cap2 = cv2.VideoCapture(1)
+        if cv2.VideoCapture(1).isOpened():
+            self.cap2 = cv2.VideoCapture(1)
+            print("2")
+        if cv2.VideoCapture(2).isOpened():
+            self.cap3 = cv2.VideoCapture(2)
+            print("3")
 
         # self.videolabel = Label(self.root, height = 800, width = 1000) ##CHANGE SO THE FULL VIDEO IS SHOWN 
         # self.videolabel.grid(row = 0, column = 0, rowspan = self.vrow, columnspan = self.vcol, sticky = 'n')
@@ -64,23 +69,22 @@ class GUIClass():
         self.end_autonomous = Button(self.root, text = "end autonomous", command = lambda: navGUI.end_autonomous(self.gui_nav))
         self.end_autonomous.grid(row = 6, column = self.vcol + 1, sticky = 'n')
 
-
         #autonomous testing 
         self.testing_queue = multiprocessing.Queue()
-            #[Autodocking slider, Auto Transect Line Slider]
+            #[Autodocking slider, Auto Transect Line Slider, Vertical Slider, Horizontal Slider, Pivot Slider]
 
-        self.autodocking_slider= DoubleVar(self.root, value = 5)
-        self.autoline_slider = DoubleVar(self.root, value = 5)
+        self.autodocking_val= DoubleVar(self.root, value = 5)
+        self.autoline_val = DoubleVar(self.root, value = 5)
 
         Label(self.root, text = "_________________________________").grid(row = 7, column = self.vcol + 1, sticky = 'n')
         Label(self.root, text = "Autonomous Docking Slider").grid(row = 8, column = self.vcol + 1, sticky = 'n')
-        BRight = Scale(self.root, variable = self.autodocking_slider, from_ = 1, to = 1000, orient = HORIZONTAL, length = 200)
-        BRight.grid(row = 9, column = self.vcol + 1, sticky = 'n')
+        self.autodocking_slider = Scale(self.root, variable = self.autodocking_val, from_ = 1, to = 1000, orient = HORIZONTAL, length = 200)
+        self.autodocking_slider.grid(row = 9, column = self.vcol + 1, sticky = 'n')
         Label(self.root, text = "_________________________________").grid(row = 10, column = self.vcol + 1, sticky = 'n')
 
         Label(self.root, text = "Autonomous Transect Line Slider").grid(row = 11, column = self.vcol + 1, sticky = 'n')
-        BLeft = Scale(self.root, variable = self.autoline_slider, from_ = 1, to = 1000, orient = HORIZONTAL, length = 200)
-        BLeft.grid(row = 12, column = self.vcol + 1, sticky = 'n')
+        self.autoline_slider = Scale(self.root, variable = self.autoline_val, from_ = 1, to = 1000, orient = HORIZONTAL, length = 200)
+        self.autoline_slider.grid(row = 12, column = self.vcol + 1, sticky = 'n')
         Label(self.root, text = "_________________________________").grid(row = 13, column = self.vcol + 1, sticky = 'n')
 
         # self.autodocking_test = Button(self.root, text = "autodocking test", command = navGUI.testing_auto)
@@ -89,9 +93,33 @@ class GUIClass():
         #Nav Mode 
         self.mode_label = Label(self.root, text = self.mode)
         self.mode_label.grid(row = 14, column = self.vcol + 1)
-        
 
-        #insert Button/Label 
+        #Nav Sliders 
+
+        self.vmax_val = DoubleVar(self.root, value = 75)
+        self.lmax_val = DoubleVar(self.root, value = 75)
+        self.pmax_val = DoubleVar(self.root, value = 75)
+
+        Label(self.root, text = "_________________________________").grid(row = 715, column = self.vcol + 1, sticky = 'n')
+        Label(self.root, text = "Vertical Max Slider").grid(row = 16, column = self.vcol + 1, sticky = 'n')
+        self.vertical_max = Scale(self.root, variable = self.vmax_val, from_ = 1, to = 100, orient = HORIZONTAL, length = 200)
+        self.vertical_max.grid(row = 17, column = self.vcol + 1, sticky = 'n')
+        Label(self.root, text = "_________________________________").grid(row = 18, column = self.vcol + 1, sticky = 'n')
+
+        Label(self.root, text = "Lateral Max Slider").grid(row = 20, column = self.vcol + 1, sticky = 'n')
+        self.lateral_max = Scale(self.root, variable = self.lmax_val, from_ = 1, to = 100, orient = HORIZONTAL, length = 200)
+        self.lateral_max.grid(row = 21, column = self.vcol + 1, sticky = 'n')
+        Label(self.root, text = "_________________________________").grid(row = 22, column = self.vcol + 1, sticky = 'n')
+
+        Label(self.root, text = "Pivot Max Slider").grid(row = 24, column = self.vcol + 1, sticky = 'n')
+        self.pivot_max = Scale(self.root, variable = self.pmax_val, from_ = 1, to = 100, orient = HORIZONTAL, length = 200)
+        self.pivot_max.grid(row = 25, column = self.vcol + 1, sticky = 'n')
+        Label(self.root, text = "_________________________________").grid(row = 26, column = self.vcol + 1, sticky = 'n')
+        
+        #testing cameras 
+        self.camera_testing = Button(self.root, text = "Assign Cameras", command = self.checkCameras)
+        self.camera_testing.grid(row = 27, column = self.vcol + 1, sticky = 'n')
+        # #insert Button/Label 
 
     def showFrames(self):
         self.camerafeedpath = "/Users/valeriefan/Desktop/MATE ROV 2023 /camerafeed.jpg"
@@ -119,12 +147,40 @@ class GUIClass():
     
     def send_testing_queue(self):
         #send through queue
-        self.coeffs = [self.autodocking_slider.get(), self.autoline_slider.get()]
+        self.coeffs = [self.autodocking_slider.get(), self.autoline_slider.get(), self.vmax_val.get(), self.lmax_val.get(), self.pmax_val.get()]
         # print(self.coeffs)
         self.testing_queue.put(self.coeffs)
 
         #loop every 20 ms
         self.root.after(20, lambda: self.send_testing_queue())
+
+    def checkCameras(self):
+        cv2.imshow("camera 1", self.cap.read()[1])
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        camera1 = askinteger("1 for front, 2 for claw, 3 for down", "Which camera view is this?")
+        self.assignCamera(self.cap, camera1)
+        if cv2.VideoCapture(1).isOpened():
+            cv2.imshow("camera 2", self.cap2.read()[1])
+            cv2.waitKey(0)
+            camera2 = askinteger("1 for front, 2 for claw, 3 for down", "Which camera view is this?")
+            self.assignCamera(self.cap2, camera2)
+        if cv2.VideoCapture(2).isOpened():
+            cv2.imshow("camera 3", self.cap3.read()[1])
+            cv2.waitKey(0)
+            camera3 = askinteger("1 for front, 2 for claw, 3 for down", "Which camera view is this?")
+            self.assignCamera(self.cap3, camera3)
+
+    def assignCamera(self, cap, answer):
+        if answer == 1:
+            self.frontcamera = cap
+            print("assigned to front camera")
+        elif answer == 2:
+            self.clawcamera = cap
+            print("assigned to claw camera")
+        elif answer == 3:
+            self.downcamera = cap
+            print("assigned to down camera")
 
     def run(self):
         while True:
@@ -134,5 +190,6 @@ if __name__ == "__main__":
     gui = GUIClass()
     # gui.showFrames()
     gui.send_testing_queue()
+    # gui.checkCameras()
     gui.run()
 
