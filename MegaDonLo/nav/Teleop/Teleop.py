@@ -60,7 +60,7 @@ class Teleop:
             # temporary straight forward/back to try with left stick
 
             # ------ MATH CALCS ------ #
-            pwmArray = MathFunc.makeString(shift_x, shift_y, yaw_x, heave_a, heave_b, 100, 100)
+            pwmArray = MathFunc.makeString(shift_x, shift_y, yaw_x, heave_a, heave_b, 90, 90)
 
             # ------ TEMPORARY LEFT STICK STRAIGHT FORWARD/BACK CALCS ------ #
             drive_straight = all_gp_states[2] * -1
