@@ -15,6 +15,12 @@ import navGUI
 #autonomous docking
 from imageProcessing.AutonomousDocking.AutonomousDocking import autodockinit
 
+#green squares
+from imageProcessing.GreenSquares.GreenSquaresGUI import runGreenSquares
+
+#measuring
+from imageProcessing.Measure.Measuring import measurebowlie, resetMeasurebowl
+
 class GUIClass():
     def __init__(self):
         #basic setup 
@@ -119,6 +125,18 @@ class GUIClass():
         #testing cameras 
         self.camera_testing = Button(self.root, text = "Assign Cameras", command = self.checkCameras)
         self.camera_testing.grid(row = 27, column = self.vcol + 1, sticky = 'n')
+        
+        #green squares
+        self.green_squares = Button(self.root, text = "Green Squares Program", command = runGreenSquares)
+        self.green_squares.grid(row = 28, column = self.vcol + 1, sticky = 'n')
+        
+        #measuring 
+        self.measure = Button(self.root, text = "Measure bowl", command = measurebowlie)
+        self.measure.grid(row = 29, column = self.vcol + 1, sticky = 'n' )
+
+        self.reset_measure = Button(self.root, text = "Reset Measuring", command = resetMeasurebowl)
+        self.reset_measure.grid(row = 30, column = self.vcol + 1, sticky = 'n')
+        
         # #insert Button/Label 
 
     def showFrames(self):

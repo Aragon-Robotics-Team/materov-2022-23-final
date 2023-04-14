@@ -8,11 +8,11 @@ import time
 import keyboard
 import tkinter as tk
 import tkinter as tk
-from greenSquares import HSVColorPicker
-from greenSquares import square1
-from greenSquares import square2
-from greenSquares import calculator
-from greenSquares import snapshots
+from .GreenSquares import HSVColorPicker
+from .GreenSquares import square1
+from .GreenSquares import square2
+from .GreenSquares import calculator
+from .GreenSquares import snapshots
 
 #instructions:
 #After running, press s to take a photo, when both photos are taken, press q
@@ -59,7 +59,7 @@ def runGreenSquares():
 
     print(calculator(count, countAfter))
 
-root = tk.Tk()
-run = tk.Button(text="Green Squares", command=runGreenSquares).pack()
+# root = tk.Tk()
+# run = tk.Button(text="Green Squares", command=runGreenSquares).pack()
 
-root.mainloop()
+# root.mainloop()
