@@ -2,9 +2,9 @@ import cv2
 import tkinter as tk
 import tkinter as tk
 
-from colorMaskTransect2 import findAngle
-from colorMaskTransect2 import straightLFPWMOutput
-from colorMaskTransect2 import colorSelector
+from imageprocessing.TransectLine.transectLine import findAngle
+from imageprocessing.TransectLine.transectLine import straightLFPWMOutput
+from imageprocessing.TransectLine.transectLine import colorSelector
 
 def startTransect():
     videoCaptureObject = cv2.VideoCapture(0)
@@ -21,7 +21,7 @@ def startTransect():
             result = False
             cv2.destroyAllWindows()
 
-root = tk.Tk()
-run = tk.Button(text = "Transect Line", command = startTransect).pack()
+#root = tk.Tk()
+#run = tk.Button(text = "Transect Line", command = startTransect).pack()
 
-root.mainloop()
+#root.mainloop()
