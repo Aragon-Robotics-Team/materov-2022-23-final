@@ -21,6 +21,9 @@ from imageProcessing.GreenSquares.GreenSquaresGUI import runGreenSquares
 #measuring
 from imageProcessing.Measure.Measuring import measurebowlie, resetMeasurebowl
 
+#transect line
+from imageProcessing.TransectLine.transectButton import startTransect
+
 class GUIClass():
     def __init__(self):
         #basic setup 
@@ -136,6 +139,10 @@ class GUIClass():
 
         self.reset_measure = Button(self.root, text = "Reset Measuring", command = resetMeasurebowl)
         self.reset_measure.grid(row = 30, column = self.vcol + 1, sticky = 'n')
+        
+        #transect line
+        self.transect_line = Button(self.root, text = "Transect Line", command = startTransect)
+        self.reset_measure.grid(row = 31, column = self.vcol + 1, sticky = 'n')
         
         # #insert Button/Label 
 
