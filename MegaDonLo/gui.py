@@ -13,16 +13,16 @@ import multiprocessing
 import navGUI
 
 #autonomous docking
-from imageProcessing.AutonomousDocking.AutonomousDocking import autodockinit
+from ImageProcessing.AutonomousDocking.AutonomousDocking import autodockinit
 
 #green squares
-from imageProcessing.GreenSquares.GreenSquaresGUI import runGreenSquares
+from ImageProcessing.GreenSquares.GreenSquaresGUI import runGreenSquares
 
 #measuring
-from imageProcessing.Measure.Measuring import measurebowlie, resetMeasurebowl
+from ImageProcessing.Measure.Measuring import measurebowlie, resetMeasurebowl
 
 #transect line
-from imageProcessing.TransectLine.transectButton import startTransect
+from ImageProcessing.TransectLine.TransectButton import startTransect
 
 class GUIClass():
     def __init__(self):
@@ -45,6 +45,15 @@ class GUIClass():
         if cv2.VideoCapture(2).isOpened():
             self.cap3 = cv2.VideoCapture(2)
             print("3")
+
+        # self.frontcamera = self.cap 
+        # self.clawcamera = self.cap
+        # self.downcamera = self.cap
+
+        self.frontcamera = None 
+        self.clawcamera = None
+        self.downcamera = None
+        
 
         # self.videolabel = Label(self.root, height = 800, width = 1000) ##CHANGE SO THE FULL VIDEO IS SHOWN 
         # self.videolabel.grid(row = 0, column = 0, rowspan = self.vrow, columnspan = self.vcol, sticky = 'n')
@@ -141,8 +150,8 @@ class GUIClass():
         self.reset_measure.grid(row = 30, column = self.vcol + 1, sticky = 'n')
         
         #transect line
-        self.transect_line = Button(self.root, text = "Transect Line", command = startTransect)
-        self.reset_measure.grid(row = 31, column = self.vcol + 1, sticky = 'n')
+        self.transect_line = Button(self.root, text = "Transect Line", command = lambda: navGUI.start_autonoomous_transect(self, self.gui_nav))
+        self.transect_line.grid(row = 31, column = self.vcol + 1, sticky = 'n')
         
         # #insert Button/Label 
 

@@ -41,13 +41,11 @@ def run(queue_in, queue_out, testing_queue):
                 print("nav process ended")
             if queue_array[0] == 1:
                 print("starting teleop")
-                # teleop.teleop_loop()
-                print("commented out actual teleop loop function ")
+                teleop.teleop_loop()
             # the autonomous object checks which autonomous task is being completed
             elif queue_array[0] == 2 or queue_array[0] == 3:
                 print("starting autonomous")
-                print("commented out actual autonomous loop function")
-                # auto.begin_and_loop()
+                auto.begin_and_loop()
 
 
 if __name__ == '__main__':

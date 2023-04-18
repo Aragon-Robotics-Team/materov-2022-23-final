@@ -2,12 +2,12 @@ import cv2
 import tkinter as tk
 import tkinter as tk
 
-from imageprocessing.TransectLine.transectLine import findAngle
-from imageprocessing.TransectLine.transectLine import straightLFPWMOutput
-from imageprocessing.TransectLine.transectLine import colorSelector
+from .TransectLine import findAngle
+from .TransectLine import straightLFPWMOutput
+from .TransectLine import colorSelector
 
-def startTransect():
-    videoCaptureObject = cv2.VideoCapture(0)
+def startTransect(videoCaptureObject, nav_queue):
+    # videoCaptureObject = cv2.VideoCapture(0)
     ret,frame = videoCaptureObject.read()
     B,G,R = colorSelector(frame)
     result = True

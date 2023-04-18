@@ -9,10 +9,12 @@ import imp
 
 import nav.deploy
 
-from imageProcessing.AutonomousDocking.AutonomousDocking import autodockingloop
+from ImageProcessing.AutonomousDocking.AutonomousDocking import autodockingloop
 
 from nav.Autonomous.Autonomous import Autonomous
 from nav.Robot.Robot import Robot 
+
+from ImageProcessing.TransectLine.TransectButton import startTransect
 
 
 navOn = False
@@ -52,12 +54,20 @@ def start_teleop(gui_obj, gui_nav):
 
 def start_autonomous_docking(gui_obj, gui_nav):
     global navOn
-    if gui_obj.frontcamera.isOpened():
+    if gui_obj.frontcamera is None: 
+        print("front camera not initialized. Please click the assign cameras button to do so")
+    else: 
         if navOn == True:
             gui_obj.mode = "autonomous docking"
             autodockingloop(gui_obj.frontcamera, gui_nav) #runs the image processing autonomous docking loop 
-    else:
-        print("front camera not initialized. Please click the assign cameras button to do so")
 
 def end_autonomous(gui_nav):
     gui_nav.put([1, 0 ,0]) #changes to teleop 
+
+def start_autonoomous_transect(gui_obj, gui_nav):
+    global navOn
+    if gui_obj.downcamera is None:
+        print("bottom cmaera not initialized. Please click the assign cameras button to do so")
+    else:
+        if navOn == True:
+            startTransect(gui_obj.downcamera, gui_nav)

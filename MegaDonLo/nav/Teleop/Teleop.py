@@ -17,18 +17,17 @@ class Teleop:
     def __init__(self, rob: Robot) -> None:
         #### Pygame initialization
         pygame.init()
-        # pygame.joystick.init()
-        # # pygame.display.init()
-        # # while True:
-        # #     pygame.event.get()
-        # #     print("Gamepad is disconnected")
-        # #     if pygame.joystick.get_count() > 0:
-        # #         break
-        # self.gamepad = pygame.joystick.Joystick(0)
-        # self.gamepad.init()
-        # self.controller_name = self.gamepad.get_name()
-        # print("Pygame initialized. Controller name:" + self.controller_name)
-        print("commented out lines 20-30 that initialize the joystick")
+        pygame.joystick.init()
+        # pygame.display.init()
+        # while True:
+        #     pygame.event.get()
+        #     print("Gamepad is disconnected")
+        #     if pygame.joystick.get_count() > 0:
+        #         break
+        self.gamepad = pygame.joystick.Joystick(0)
+        self.gamepad.init()
+        self.controller_name = self.gamepad.get_name()
+        print("Pygame initialized. Controller name:" + self.controller_name)
 
         self.numbers = Numbers()
         # self.gamepad_states = [] # list you send to MathFunc
