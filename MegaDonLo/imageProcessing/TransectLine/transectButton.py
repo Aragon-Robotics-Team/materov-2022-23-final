@@ -14,7 +14,8 @@ def startTransect(videoCaptureObject, nav_queue):
     while result:
         ret,frame = videoCaptureObject.read()
         # cv2.imshow("Capturing Video",frame)
-        findAngle(frame, B, G, R)
+        x,y = findAngle(frame, B, G, R)
+        nav_queue.put([3, x, y])
         cv2.imshow("linesDetected", frame)
         if(cv2.waitKey(1) & 0xFF == ord('q')):
             videoCaptureObject.release()
