@@ -28,7 +28,7 @@ def autodockingloop(cap, nav_queue):
         vX = cX - contours.shape[1]
         queueArray = [2, vX, vY]
         nav_queue.put(queueArray)
-        #print(queueArray)
+        # print(queueArray)
         #calculatethrust(cX, cY)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             cv2.destroyAllWindows

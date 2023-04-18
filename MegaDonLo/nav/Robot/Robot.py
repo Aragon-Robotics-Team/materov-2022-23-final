@@ -21,10 +21,9 @@ class Robot:
         self.portNum = 21301
         self.baudRate = 9600
         self.delay = 0.1
-        # self.arduino = serial.Serial(port=f'/dev/cu.usbmodem{self.portNum}',
-                                    #  baudrate=self.baudRate,
-                                    #  timeout=1)
-        print("arduino commented out")
+        self.arduino = serial.Serial(port=f'/dev/cu.usbmodem{self.portNum}',
+                                     baudrate=self.baudRate,
+                                     timeout=1)
         self.message = [0,0,0]
         self.testingmessage = []
         sleep(1)
@@ -37,10 +36,9 @@ class Robot:
                    str(ls[4]) + "," +
                    str(ls[5]) + ".")
         # print("sending:", sendStr)
-        # self.arduino.write(sendStr.encode("ascii"))  # write (output) to arduino
+        self.arduino.write(sendStr.encode("ascii"))  # write (output) to arduino
         # while self.arduino.in_waiting == 0:
         #     pass
-        print("arduino commented out")
         # print(self.arduino.in_waiting)
 
         received_data_list = self.arduino.readline().decode("ascii").split(',')  # read input from arduino

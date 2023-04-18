@@ -19,11 +19,11 @@ class Teleop:
         pygame.init()
         pygame.joystick.init()
         # pygame.display.init()
-        # while True:
-        #     pygame.event.get()
-        #     print("Gamepad is disconnected")
-        #     if pygame.joystick.get_count() > 0:
-        #         break
+        while True:
+            pygame.event.get()
+            print("Gamepad is disconnected")
+            if pygame.joystick.get_count() > 0:
+                break
         self.gamepad = pygame.joystick.Joystick(0)
         self.gamepad.init()
         self.controller_name = self.gamepad.get_name()

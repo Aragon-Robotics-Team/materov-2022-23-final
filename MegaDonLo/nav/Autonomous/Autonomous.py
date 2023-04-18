@@ -34,8 +34,7 @@ class Autonomous():
                     sendStr = self.autoDocking(x, y)
                     print("autodocking")
                 
-                print("autonomous send to arduino commented out")
-                # self.rob.get_send_arduino(sendStr)  # send to Robot arduino comm function
+                self.rob.get_send_arduino(sendStr)  # send to Robot arduino comm function
             # self.rob.get_send_arduino([1600, 1600, 1600, 1600, 1600, 1600])  # send to Robot arduino comm function
                 # print("sent string")
                 print(sendStr)
