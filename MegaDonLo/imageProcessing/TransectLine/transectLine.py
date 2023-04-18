@@ -60,10 +60,11 @@ def straightLFPWMOutput(x1, x2, y1, y2, videoImg):
         angleToAdjust = (math.acos(yComponent/(math.sqrt(xComponent**2 + yComponent**2))))*180/math.pi
     print(angleToAdjust)
     #NAV CODE TO ADJUST ANGLE
-    lineMidpoint = (int)((x1+x2)/2)
-    imageMidpoint = (int)(videoImg.shape[1])
+    #lineMidpoint = (int)((x1+x2)/2)
+    #imageMidpoint = (int)(videoImg.shape[1])
     #if lineMidpoint > imageMidpoint:
         #NAV CODE TO MOVE LEFT/RIGHT
+    return(xComponent, yComponent)
 
 def colorSelector(img):
 	color_selected = np.zeros((150,150,3), np.uint8)
