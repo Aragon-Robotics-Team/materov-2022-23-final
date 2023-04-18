@@ -57,11 +57,11 @@ class GUIClass():
             #End Nav Process: [4, 0, 0]
         self.nav_gui = multiprocessing.Queue() 
 
-        start_nav_b = Button(self.root, text = "Begin Nav Process", command = lambda: navGUI.start_nav_process(self.gui_nav, self.nav_gui, self.testing_queue))
-        start_nav_b.grid(row = 0, column = self.vcol + 1, sticky = 'n')
+        self.start_nav_b = Button(self.root, text = "Begin Nav Process", command = lambda: navGUI.start_nav_process(self.gui_nav, self.nav_gui, self.testing_queue))
+        self.start_nav_b.grid(row = 0, column = self.vcol + 1, sticky = 'n')
 
-        end_nav_b = Button(self.root, text = "Terminate Nav Process", command = lambda: navGUI.terminate_nav_process(self.gui_nav))
-        end_nav_b.grid(row = 1, column = self.vcol + 1, sticky = 'n')
+        self.end_nav_b = Button(self.root, text = "Terminate Nav Process", command = lambda: navGUI.terminate_nav_process(self.gui_nav))
+        self.end_nav_b.grid(row = 1, column = self.vcol + 1, sticky = 'n')
 
         #navigation 
         self.mode = "none"

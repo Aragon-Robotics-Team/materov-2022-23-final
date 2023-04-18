@@ -33,8 +33,9 @@ class Autonomous():
                 elif whichAuto == 2:
                     sendStr = self.autoDocking(x, y)
                     print("autodocking")
-
-                self.rob.get_send_arduino(sendStr)  # send to Robot arduino comm function
+                
+                print("autonomous send to arduino commented out")
+                # self.rob.get_send_arduino(sendStr)  # send to Robot arduino comm function
             # self.rob.get_send_arduino([1600, 1600, 1600, 1600, 1600, 1600])  # send to Robot arduino comm function
                 # print("sent string")
                 print(sendStr)
@@ -62,7 +63,7 @@ class Autonomous():
         percent_horiz=50
         percent_vert=50
 
-        return(makeString(Lx, Ly, Rx, A, B, percent_horiz, percent_vert))
+        return(makeString(Lx, Ly, Rx, A, B, percent_horiz, percent_vert, self.rob))
 
 
     '''
@@ -80,8 +81,8 @@ class Autonomous():
         slider = 1
         # while self.testing_queue.empty() == False:
         #     slider = 1/self.testing_queue.get()[0]
-        if len(self.rob.get_queue()) > 0:
-            slider = 1/self.rob.get_queue()[0]
+        if len(self.rob.get_testing_queue()) > 0:
+            slider = 1/self.rob.get_testing_queue()[0]
         print(slider)
         Lx=1
         if(x>0):
@@ -100,5 +101,5 @@ class Autonomous():
         percent_vert=100
         
         print("in nav autodocking")
-        return makeString(Lx, Ly, Rx, A, B, percent_horiz, percent_vert) 
+        return makeString(Lx, Ly, Rx, A, B, percent_horiz, percent_vert, self.rob) 
         

@@ -13,7 +13,7 @@ snapshots = ["C:/Users/alexa/Desktop/square0.png", "C:/Users/alexa/Desktop/squar
 
 image_hsv = None
 
-root = tk.Tk()
+# root = tk.Tk()
 
 #------------------------------
 def HSVColorPicker(img_path):

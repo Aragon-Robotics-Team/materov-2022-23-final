@@ -17,17 +17,18 @@ class Teleop:
     def __init__(self, rob: Robot) -> None:
         #### Pygame initialization
         pygame.init()
-        pygame.joystick.init()
-        # pygame.display.init()
-        while True:
-            pygame.event.get()
-            print("Gamepad is disconnected")
-            if pygame.joystick.get_count() > 0:
-                break
-        self.gamepad = pygame.joystick.Joystick(0)
-        self.gamepad.init()
-        self.controller_name = self.gamepad.get_name()
-        print("Pygame initialized. Controller name:" + self.controller_name)
+        # pygame.joystick.init()
+        # # pygame.display.init()
+        # # while True:
+        # #     pygame.event.get()
+        # #     print("Gamepad is disconnected")
+        # #     if pygame.joystick.get_count() > 0:
+        # #         break
+        # self.gamepad = pygame.joystick.Joystick(0)
+        # self.gamepad.init()
+        # self.controller_name = self.gamepad.get_name()
+        # print("Pygame initialized. Controller name:" + self.controller_name)
+        print("commented out lines 20-30 that initialize the joystick")
 
         self.numbers = Numbers()
         # self.gamepad_states = [] # list you send to MathFunc
@@ -60,7 +61,7 @@ class Teleop:
             # temporary straight forward/back to try with left stick
 
             # ------ MATH CALCS ------ #
-            pwmArray = MathFunc.makeString(shift_x, shift_y, yaw_x, heave_a, heave_b, 90, 90)
+            pwmArray = MathFunc.makeString(shift_x, shift_y, yaw_x, heave_a, heave_b, 90, 90, self.robot)
 
             # ------ TEMPORARY LEFT STICK STRAIGHT FORWARD/BACK CALCS ------ #
             drive_straight = all_gp_states[2] * -1
@@ -79,7 +80,7 @@ class Teleop:
 
             self.robot.get_send_arduino(pwmArray)
 
-            queue_message = self.rob.get_queue()
+            queue_message = self.robot.get_queue()
             if len(queue_message) > 0:
                 period = queue_message[0]
                 if period != 0:  # if the queue is saying to exit teleop
