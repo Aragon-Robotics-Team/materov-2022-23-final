@@ -9,7 +9,11 @@ import time
 import keyboard
 import tkinter as tk
 
-snapshots = ["C:/Users/alexa/Desktop/square0.png", "C:/Users/alexa/Desktop/square1.png"]
+import globalvars
+
+
+# snapshots = ["C:/Users/alexa/Desktop/square0.png", "C:/Users/alexa/Desktop/square1.png"]
+snapshots = globalvars.snapshots
 
 image_hsv = None
 
@@ -139,6 +143,7 @@ def square2(colors):
 	
 	cv2.imshow("Second pic", imageFrame)
 	cv2.waitKey(0)
+	cv2.destroyAllWindows()
 
 	return countAfter
 	

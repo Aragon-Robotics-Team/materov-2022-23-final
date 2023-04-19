@@ -27,17 +27,19 @@ def run(queue_in, queue_out, testing_queue):
         there needs to be a conditional in teleop and autonomous that ends their loops 
         if the mode changes (queue_array[0] changes)
     '''
-
+    while queue_in.empty():          # if there's nothing in the queue
+        pass                         # wait
     loop = True
     while loop:
-        while queue_in.empty():          # if there's nothing in the queue
-            pass                         # wait
+        # while queue_in.empty():          # if there's nothing in the queue
+        #     pass                         # wait
         # queue_array = queue_in.get()     # until there is something
         queue_array = rob.get_queue()
-        print("deploy.py: " + str(queue_array))
+        # print("deploy.py: " + str(queue_array))
         if queue_array[0] != 0:
             if queue_array[0] == 4:
                 loop = False
+                rob.queue_out.put([4, 0, 0, 0, 0, 0, 0])
                 print("nav process ended")
             if queue_array[0] == 1:
                 print("starting teleop")

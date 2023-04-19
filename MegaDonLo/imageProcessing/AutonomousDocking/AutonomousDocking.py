@@ -3,6 +3,7 @@ import imutils
 import cv2 
 from .AutoDockingColorPicker import colorSelector
 import multiprocessing 
+import globalvars
 
 B = 0
 G = 0
@@ -17,7 +18,8 @@ def autodockinit(img_path):
 #---------------------------
 def autodockingloop(cap, nav_queue):
     videocap = cap
-    autodockingimgpath = "/Users/valeriefan/Desktop/MATE ROV 2023 /autodockingloop.jpg"
+    # autodockingimgpath = "/Users/valeriefan/Desktop/MATE ROV 2023 /autodockingloop.jpg"
+    autodockingimgpath = globalvars.autodockingimgpath
     #tracking the docking button in the live video feed 
     while (1): 
         cv2.imwrite(autodockingimgpath, videocap.read()[1])
@@ -31,9 +33,9 @@ def autodockingloop(cap, nav_queue):
         # print(queueArray)
         #calculatethrust(cX, cY)
         if cv2.waitKey(1) & 0xFF == ord('q'):
-            cv2.destroyAllWindows
             print("autonomous docking ended")
             nav_queue.put([1, 0 ,0])
+            cv2.destroyAllWindows()
             break
         # cv2.waitKey(0)
 

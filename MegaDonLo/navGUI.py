@@ -10,11 +10,15 @@ import imp
 import nav.deploy
 
 from ImageProcessing.AutonomousDocking.AutonomousDocking import autodockingloop
+from ImageProcessing.AutonomousDocking.AutonomousDocking import autodockinit
+
 
 from nav.Autonomous.Autonomous import Autonomous
 from nav.Robot.Robot import Robot 
 
 from ImageProcessing.TransectLine.TransectButton import startTransect
+
+import guiFuncs
 
 
 navOn = False
@@ -36,21 +40,32 @@ def start_nav_process(gui_nav, nav_gui, testing_queue):
     p = NavProcess(gui_nav, nav_gui, testing_queue)
     imp.reload(nav.deploy)
     p.start()
+    gui_nav.put([0, 0, 0])
+    nav_gui.put([0, 0, 0, 0, 0, 0, 0])
 
-def terminate_nav_process(gui_nav):
+def terminate_nav_process(gui_nav, nav_gui):
     global navOn
     navOn = False 
     gui_nav.put([4, 0, 0]) #turn off the thrusters and end the nav loop  
+    # nav_gui.put([4, 0, 0, 0, 0, 0, 0])
     # global p
     # p.terminate()
 
 def start_teleop(gui_obj, gui_nav):
     global navOn
     if navOn == True: #if the nav process has started 
-        gui_obj.mode = "teleop"
         gui_nav.put([1, 0, 0]) #start teleop 
     else:
         print("nav process is not active") #else, don't start teleop 
+
+def autonomous_docking_init(gui_obj):
+    global navOn
+    if gui_obj.frontcamera is None: 
+        print("front camera not initialized. Please click the assign cameras button to do so")
+    else: 
+        if navOn == True:
+            autodockinit(guiFuncs.snapshot(gui_obj, gui_obj.frontcamera))
+            
 
 def start_autonomous_docking(gui_obj, gui_nav):
     global navOn
@@ -64,10 +79,10 @@ def start_autonomous_docking(gui_obj, gui_nav):
 def end_autonomous(gui_nav):
     gui_nav.put([1, 0 ,0]) #changes to teleop 
 
-def start_autonoomous_transect(gui_obj, gui_nav):
+def start_autonomous_transect(gui_obj, gui_nav):
     global navOn
     if gui_obj.downcamera is None:
-        print("bottom cmaera not initialized. Please click the assign cameras button to do so")
+        print("bottom camera not initialized. Please click the assign cameras button to do so")
     else:
         if navOn == True:
             startTransect(gui_obj.downcamera, gui_nav)

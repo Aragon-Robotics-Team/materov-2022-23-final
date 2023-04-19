@@ -12,17 +12,12 @@ from PIL import Image, ImageTk
 import multiprocessing
 import navGUI
 
-#autonomous docking
-from ImageProcessing.AutonomousDocking.AutonomousDocking import autodockinit
-
-#green squares
-from ImageProcessing.GreenSquares.GreenSquaresGUI import runGreenSquares
-
 #measuring
 from ImageProcessing.Measure.Measuring import measurebowlie, resetMeasurebowl
 
-#transect line
-from ImageProcessing.TransectLine.TransectButton import startTransect
+#GUI FUNCTIONS 
+import guiFuncs
+
 
 class GUIClass():
     def __init__(self):
@@ -45,6 +40,9 @@ class GUIClass():
         if cv2.VideoCapture(2).isOpened():
             self.cap3 = cv2.VideoCapture(2)
             print("3")
+        if cv2.VideoCapture(2).isOpened():
+            self.cap4 = cv2.VideoCapture(3)
+            print("4")
 
         # self.frontcamera = self.cap 
         # self.clawcamera = self.cap
@@ -65,11 +63,14 @@ class GUIClass():
             #Autonomous Transect Line: [3, x, y]
             #End Nav Process: [4, 0, 0]
         self.nav_gui = multiprocessing.Queue() 
+            #[mode, rf, lf, rb, lb, v1, v2]
+        self.nav_gui_val = [5, 0, 0, 0, 0, 0, 0]
+            #holds the value of the nav_gui
 
         self.start_nav_b = Button(self.root, text = "Begin Nav Process", command = lambda: navGUI.start_nav_process(self.gui_nav, self.nav_gui, self.testing_queue))
         self.start_nav_b.grid(row = 0, column = self.vcol + 1, sticky = 'n')
 
-        self.end_nav_b = Button(self.root, text = "Terminate Nav Process", command = lambda: navGUI.terminate_nav_process(self.gui_nav))
+        self.end_nav_b = Button(self.root, text = "Terminate Nav Process", command = lambda: navGUI.terminate_nav_process(self.gui_nav, self.nav_gui))
         self.end_nav_b.grid(row = 1, column = self.vcol + 1, sticky = 'n')
 
         #navigation 
@@ -78,7 +79,7 @@ class GUIClass():
         start_teleop = Button(self.root, text = "Teleop", command = lambda: navGUI.start_teleop(self, self.gui_nav))
         start_teleop.grid(row = 2, column = self.vcol + 1, sticky = 'n')
 
-        self.autonomous_docking_init = Button(self.root, text = "Initialize Auto Docking", command = lambda: autodockinit(self.snapshot()))
+        self.autonomous_docking_init = Button(self.root, text = "Initialize Auto Docking", command = lambda: navGUI.autonomous_docking_init(self))
         self.autonomous_docking_init.grid(row = 3, column = self.vcol + 1, sticky = 'n')
 
         self.autonomous_docking = Button(self.root, text = "Auto Docking Live", command = lambda: navGUI.start_autonomous_docking(self, self.gui_nav))
@@ -135,11 +136,11 @@ class GUIClass():
         Label(self.root, text = "_________________________________").grid(row = 26, column = self.vcol + 1, sticky = 'n')
         
         #testing cameras 
-        self.camera_testing = Button(self.root, text = "Assign Cameras", command = self.checkCameras)
+        self.camera_testing = Button(self.root, text = "Assign Cameras", command = lambda: guiFuncs.checkCameras(self))
         self.camera_testing.grid(row = 27, column = self.vcol + 1, sticky = 'n')
         
         #green squares
-        self.green_squares = Button(self.root, text = "Green Squares Program", command = runGreenSquares)
+        self.green_squares = Button(self.root, text = "Green Squares Program", command = lambda: guiFuncs.startGreenSquares(self))
         self.green_squares.grid(row = 28, column = self.vcol + 1, sticky = 'n')
         
         #measuring 
@@ -150,71 +151,43 @@ class GUIClass():
         self.reset_measure.grid(row = 30, column = self.vcol + 1, sticky = 'n')
         
         #transect line
-        self.transect_line = Button(self.root, text = "Transect Line", command = lambda: navGUI.start_autonoomous_transect(self, self.gui_nav))
+        self.transect_line = Button(self.root, text = "Transect Line", command = lambda: navGUI.start_autonomous_transect(self, self.gui_nav))
         self.transect_line.grid(row = 31, column = self.vcol + 1, sticky = 'n')
+
         
         # #insert Button/Label 
 
-    def showFrames(self):
-        self.camerafeedpath = "/Users/valeriefan/Desktop/MATE ROV 2023 /camerafeed.jpg"
-        cv2.imwrite(self.camerafeedpath, self.cap.read()[1])
-
-        cv2image= cv2.cvtColor(cv2.imread(self.camerafeedpath) ,cv2.COLOR_BGR2RGB)
-        # cv2image= cv2.cvtColor(self.cap.read()[1],cv2.COLOR_BGR2RGB)
-        #error is fine 
-        img = Image.fromarray(cv2image)
-        # Convert image to PhotoImage
-        imgtk = ImageTk.PhotoImage(image = img)
-        #error is fine
-        self.videolabel.imgtk = imgtk
-        self.videolabel.configure(image=imgtk)
-        # Repeat after an interval to capture continiously
-        self.videolabel.after(20, self.showFrames)
-
-    def snapshot(self):
-        cv2.imwrite("/Users/valeriefan/Desktop/MATE ROV 2023 /videosnapshot.png", self.cap2.read()[1])
-        return("/Users/valeriefan/Desktop/MATE ROV 2023 /videosnapshot.png") 
     
-    def update_mode_label(self):
-        self.mode_label.config(text = self.mode)
-        self.update_mode_label.after(20, self.update_mode_label)
-    
-    def send_testing_queue(self):
-        #send through queue
-        self.coeffs = [self.autodocking_slider.get(), self.autoline_slider.get(), self.vmax_val.get(), self.lmax_val.get(), self.pmax_val.get()]
-        # print(self.coeffs)
-        self.testing_queue.put(self.coeffs)
+    # #----------------------------------------------------------------------------------------------------
+    # #Displays whether or not the bot is in teleop, autonomous docking, or autonomous transect line 
+    # def update_mode_label(self):
+    #     queue_val = self.get_nav_gui_queue()
+    #     # print('asdf')
+    #     # print("nav_gui queue: " + str(queue_val))
+    #     if queue_val[0] == 0:
+    #         self.mode_label.config(text = "Mode: Nav Process Started ")
+    #     elif queue_val[0] == 1:
+    #         self.mode_label.config(text = "Mode: Teleop")
+    #     elif queue_val[0] == 2:
+    #         self.mode_label.config(text = "Mode: Auto Docking")
+    #     elif queue_val[0] == 3:
+    #         self.mode_label.config(text = "Mode: Auto Transect")
+    #     elif queue_val[0] == 4:
+    #         self.mode_label.config(text = "Mode: Nav Process Ended")
+    #     elif queue_val[0] == 5:
+    #         self.mode_label.config(text = "Mode: None")
 
-        #loop every 20 ms
-        self.root.after(20, lambda: self.send_testing_queue())
 
-    def checkCameras(self):
-        cv2.imshow("camera 1", self.cap.read()[1])
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-        camera1 = askinteger("1 for front, 2 for claw, 3 for down", "Which camera view is this?")
-        self.assignCamera(self.cap, camera1)
-        if cv2.VideoCapture(1).isOpened():
-            cv2.imshow("camera 2", self.cap2.read()[1])
-            cv2.waitKey(0)
-            camera2 = askinteger("1 for front, 2 for claw, 3 for down", "Which camera view is this?")
-            self.assignCamera(self.cap2, camera2)
-        if cv2.VideoCapture(2).isOpened():
-            cv2.imshow("camera 3", self.cap3.read()[1])
-            cv2.waitKey(0)
-            camera3 = askinteger("1 for front, 2 for claw, 3 for down", "Which camera view is this?")
-            self.assignCamera(self.cap3, camera3)
+    #     self.mode_label.after(20, self.update_mode_label)
 
-    def assignCamera(self, cap, answer):
-        if answer == 1:
-            self.frontcamera = cap
-            print("assigned to front camera")
-        elif answer == 2:
-            self.clawcamera = cap
-            print("assigned to claw camera")
-        elif answer == 3:
-            self.downcamera = cap
-            print("assigned to down camera")
+
+    def get_nav_gui_queue(self):
+        while self.nav_gui.empty() == False:
+            self.nav_gui_val = self.nav_gui.get()
+
+        # print("nav_gui_queue: " + str(self.nav_gui_val))
+        return self.nav_gui_val
+
 
     def run(self):
         while True:
@@ -223,7 +196,8 @@ class GUIClass():
 if __name__ == "__main__":
     gui = GUIClass()
     # gui.showFrames()
-    gui.send_testing_queue()
-    # gui.checkCameras()
+    guiFuncs.send_testing_queue(gui)
+    guiFuncs.update_mode_label(gui)
+    # guiFuncs.checkCameras(gui)
     gui.run()
 

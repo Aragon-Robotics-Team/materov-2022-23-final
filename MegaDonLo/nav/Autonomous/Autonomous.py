@@ -1,11 +1,12 @@
 from multiprocessing import Queue
 # import nav.Robot.Robot
+from nav.Robot.Robot import Robot
 from ..Teleop.MathFunc import PWM
 from ..Teleop.MathFunc import makeString
 from time import sleep
 
 class Autonomous():
-    def __init__(self, rob, testing_queue):
+    def __init__(self, rob: Robot, testing_queue):
 
         self.rob = rob
         self.testing_queue = testing_queue
@@ -26,15 +27,21 @@ class Autonomous():
                 x = round(qList[1], 2)  # round vector component to 2 decimal places
                 y = round(qList[2], 2)
 
-                if whichAuto == 0:  # exit autonomous
+                if whichAuto == 0 or whichAuto == 1:  # exit autonomous
                     break
-                if whichAuto == 1:
+                if whichAuto == 3:
                     sendStr = self.transectLine(x, y)
                 elif whichAuto == 2:
                     sendStr = self.autoDocking(x, y)
                     print("autodocking")
+
+                #send mode and pwm values back to the gui queue: 
+                queue_out_array = [qList[0], sendStr[0], sendStr[1], sendStr[2], sendStr[3], sendStr[4], sendStr[5]]
+                # print(queue_out_array)
+                self.rob.queue_out.put(queue_out_array)
                 
                 self.rob.get_send_arduino(sendStr)  # send to Robot arduino comm function
+                # print("commented out get send arduino")
             # self.rob.get_send_arduino([1600, 1600, 1600, 1600, 1600, 1600])  # send to Robot arduino comm function
                 # print("sent string")
                 print(sendStr)

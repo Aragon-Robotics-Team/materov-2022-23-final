@@ -18,7 +18,6 @@ class Teleop:
         #### Pygame initialization
         pygame.init()
         pygame.joystick.init()
-        # pygame.display.init()
         while True:
             pygame.event.get()
             print("Gamepad is disconnected")
@@ -77,15 +76,19 @@ class Teleop:
 
             # print(pwmArray)
 
-            self.robot.get_send_arduino(pwmArray)
+            # self.robot.get_send_arduino(pwmArray)
+            print("commented out send to arduino")
+
+            #send the mode + thruster values back to the gui process: 
+            self.robot.queue_out.put([1, pwmArray[0], pwmArray[1], pwmArray[2], pwmArray[3], pwmArray[4], pwmArray[5]])
 
             queue_message = self.robot.get_queue()
             if len(queue_message) > 0:
                 period = queue_message[0]
-                if period != 0:  # if the queue is saying to exit teleop
+                if period != 1:  # if the queue is saying to exit teleop
                     if period == 4:
                         self.robot.get_send_arduino([1500,1500,1500,1500,1500,1500])
-                        pass
+                        break
                     break
 
             pygame.event.clear()
