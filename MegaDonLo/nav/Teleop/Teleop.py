@@ -76,8 +76,8 @@ class Teleop:
 
             # print(pwmArray)
 
-            # self.robot.get_send_arduino(pwmArray)
-            print("commented out send to arduino")
+            self.robot.get_send_arduino(pwmArray)
+            # print("commented out send to arduino")
 
             #send the mode + thruster values back to the gui process: 
             self.robot.queue_out.put([1, pwmArray[0], pwmArray[1], pwmArray[2], pwmArray[3], pwmArray[4], pwmArray[5]])

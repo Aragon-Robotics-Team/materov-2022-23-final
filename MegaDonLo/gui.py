@@ -40,9 +40,12 @@ class GUIClass():
         if cv2.VideoCapture(2).isOpened():
             self.cap3 = cv2.VideoCapture(2)
             print("3")
-        if cv2.VideoCapture(2).isOpened():
+        if cv2.VideoCapture(3).isOpened():
             self.cap4 = cv2.VideoCapture(3)
             print("4")
+        if cv2.VideoCapture(4).isOpened():
+            self.cap5 = cv2.VideoCapture(4)
+            print("5")
 
         # self.frontcamera = self.cap 
         # self.clawcamera = self.cap
@@ -156,29 +159,6 @@ class GUIClass():
 
         
         # #insert Button/Label 
-
-    
-    # #----------------------------------------------------------------------------------------------------
-    # #Displays whether or not the bot is in teleop, autonomous docking, or autonomous transect line 
-    # def update_mode_label(self):
-    #     queue_val = self.get_nav_gui_queue()
-    #     # print('asdf')
-    #     # print("nav_gui queue: " + str(queue_val))
-    #     if queue_val[0] == 0:
-    #         self.mode_label.config(text = "Mode: Nav Process Started ")
-    #     elif queue_val[0] == 1:
-    #         self.mode_label.config(text = "Mode: Teleop")
-    #     elif queue_val[0] == 2:
-    #         self.mode_label.config(text = "Mode: Auto Docking")
-    #     elif queue_val[0] == 3:
-    #         self.mode_label.config(text = "Mode: Auto Transect")
-    #     elif queue_val[0] == 4:
-    #         self.mode_label.config(text = "Mode: Nav Process Ended")
-    #     elif queue_val[0] == 5:
-    #         self.mode_label.config(text = "Mode: None")
-
-
-    #     self.mode_label.after(20, self.update_mode_label)
 
 
     def get_nav_gui_queue(self):
