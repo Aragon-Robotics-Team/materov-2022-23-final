@@ -61,20 +61,20 @@ class Teleop:
             # ------ MATH CALCS ------ #
             pwmArray = MathFunc.makeString(shift_x, shift_y, yaw_x, heave_a, heave_b, 90, 90, self.robot)
 
-            # ------ TEMPORARY LEFT STICK STRAIGHT FORWARD/BACK CALCS ------ #
-            drive_straight = all_gp_states[2] * -1
+            # # ------ TEMPORARY LEFT STICK STRAIGHT FORWARD/BACK CALCS ------ #
+            # drive_straight = all_gp_states[2] * -1
 
-            if abs(drive_straight) > 0.1:  # deadband of 0.1 for left stick
+            # if abs(drive_straight) > 0.1:  # deadband of 0.1 for left stick
 
-                # drive straight function:
-                ds_pwm = round(((abs(drive_straight) ** 1.5) * (drive_straight / abs(drive_straight)) * 350))
+            #     # drive straight function:
+            #     ds_pwm = round(((abs(drive_straight) ** 1.5) * (drive_straight / abs(drive_straight)) * 350))
 
-                pwmArray[0] += ds_pwm
-                pwmArray[1] += ds_pwm
-                pwmArray[2] += ds_pwm
-                pwmArray[3] += ds_pwm
+            #     pwmArray[0] += ds_pwm
+            #     pwmArray[1] += ds_pwm
+            #     pwmArray[2] += ds_pwm
+            #     pwmArray[3] += ds_pwm
 
-            # print(pwmArray)
+            # # print(pwmArray)
 
             self.robot.get_send_arduino(pwmArray)
             # print("commented out send to arduino")
