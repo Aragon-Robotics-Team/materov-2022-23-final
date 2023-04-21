@@ -77,6 +77,7 @@ def start_autonomous_docking(gui_obj, gui_nav):
             autodockingloop(gui_obj.frontcamera, gui_nav) #runs the image processing autonomous docking loop 
 
 def end_autonomous(gui_nav):
+<<<<<<< Updated upstream
     gui_nav.put([1, 0 ,0]) #changes to teleop 
 
 def start_autonomous_transect(gui_obj, gui_nav):
@@ -86,3 +87,30 @@ def start_autonomous_transect(gui_obj, gui_nav):
     else:
         if navOn == True:
             startTransect(gui_obj.downcamera, gui_nav)
+=======
+    gui_nav.put([1, 0 ,0])
+
+
+# BELOW IS EMERGENCY STOP AND START FUNCTION - ADD URSELF
+def enableBot():
+    global autoArray
+    autoArray[1] = 0
+    output_queue.put(autoArray)
+    print ("BOT ENABLED")
+
+def disableBot():
+    global autoArray
+    autoArray[1] = 1
+    output_queue.put(autoArray)
+    print("BOT DISABLED")
+
+# def testing_auto():
+#     queue = multiprocessing.Queue()
+#     rob = Robot (queue, queue, queue)
+#     auto = Autonomous(rob, queue)
+#     print(auto.autoDocking(100, 100))
+#     print(auto.autoDocking(500, 500))
+#     print(auto.autoDocking(1000, 1000))
+#     print(auto.autoDocking(1500, 1500))
+
+>>>>>>> Stashed changes

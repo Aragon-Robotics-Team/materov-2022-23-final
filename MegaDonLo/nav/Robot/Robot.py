@@ -5,7 +5,6 @@ Communicates with other processes, namely GUI, and allows Python to communicate 
 """
 import pygame
 from time import sleep
-import serial
 from multiprocessing import Queue
 
 
@@ -21,7 +20,7 @@ class Robot:
         self.portNum = 21301
         self.baudRate = 9600
         self.delay = 0.1
-        self.arduino = serial.Serial(port=f'/dev/cu.usbmodem{self.portNum}',
+        self.arduino = serial.Serial(port='COM3',
                                      baudrate=self.baudRate,
                                      timeout=1)
         self.message = [0,0,0]

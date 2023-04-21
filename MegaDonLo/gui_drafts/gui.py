@@ -12,12 +12,17 @@ from PIL import Image, ImageTk
 import multiprocessing
 import navGUI
 
+<<<<<<< Updated upstream:MegaDonLo/gui.py
 #measuring
 from ImageProcessing.Measure.Measuring import measurebowlie, resetMeasurebowl
 
 #GUI FUNCTIONS 
 import guiFuncs
 
+=======
+#autonomous docking
+from imageProcessing.AutonomousDocking.AutonomousDocking import autodockinit
+>>>>>>> Stashed changes:MegaDonLo/gui_drafts/gui.py
 
 class GUIClass():
     def __init__(self):
@@ -141,6 +146,7 @@ class GUIClass():
         #testing cameras 
         self.camera_testing = Button(self.root, text = "Assign Cameras", command = lambda: guiFuncs.checkCameras(self))
         self.camera_testing.grid(row = 27, column = self.vcol + 1, sticky = 'n')
+<<<<<<< Updated upstream:MegaDonLo/gui.py
         
         #green squares
         self.green_squares = Button(self.root, text = "Green Squares Program", command = lambda: guiFuncs.startGreenSquares(self))
@@ -158,6 +164,8 @@ class GUIClass():
         self.transect_line.grid(row = 31, column = self.vcol + 1, sticky = 'n')
 
         
+=======
+>>>>>>> Stashed changes:MegaDonLo/gui_drafts/gui.py
         # #insert Button/Label 
 
 
