@@ -60,7 +60,7 @@ def click_event(event, x, y, flags, params):
                 #print("starting bowl calculations")
                 measurebowlieCalculations()
                 cv2.destroyAllWindows()
-
+  
 def measurebowlieCalculations():
     global bowlPictureCount
     global countbowlCoords
@@ -69,15 +69,18 @@ def measurebowlieCalculations():
 
     #finding distances
     laserPixels = math.sqrt(((bowlCoords[0][0]-bowlCoords[1][0])**2) + ((bowlCoords[0][1]-bowlCoords[1][1]) **2))
-    print("Laser Pixels per cm: " + str(laserPixels))
+    print("Laser Pixels per 1.27 cm or 0.5 inch: " + str(laserPixels))
+    laserPixelsPerInch = laserPixels*2
+    print(laserPixelsPerInch)
     bowlPixels = math.sqrt(((bowlCoords[2][0]-bowlCoords[3][0])**2) + ((bowlCoords[2][1]-bowlCoords[3][1]) **2))
     print("Total bowl Pixels: " + str(bowlPixels))
-    bowlLength = bowlPixels / laserPixels
-    print("bowl Length in cm: " + str(bowlLength))
+    bowlLength = bowlPixels / laserPixelsPerInch
+    print(bowlLength)
+    print("bowl Length in cm: " + str(2.54 * bowlLength))
     allbowlLengths[bowlPictureCount] = bowlLength
     bowlPictureCount = bowlPictureCount + 1
 
-def measurebowlie():
+def measurebowlie(frontcamera):
     #reset variables for new image
     global countbowlCoords
     global measurebowlieClick
@@ -89,7 +92,7 @@ def measurebowlie():
     if bowlPictureCount < 2:
         #show image and read coordinates
         print("bowl #: " + str(bowlPictureCount + 1))
-        ret, frame = videoCaptureObject.read()
+        ret, frame = frontcamera.read()
         bowlImg = frame
         cv2.imshow("bowl", bowlImg)
         cv2.setMouseCallback("bowl", click_event)

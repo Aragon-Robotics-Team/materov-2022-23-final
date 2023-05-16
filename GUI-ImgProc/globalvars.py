@@ -12,4 +12,4 @@ camerafeedpath = "/Users/valeriefan/Desktop/MATE ROV 2023 /camerafeed.jpg"
 generalsnapshot = "/Users/valeriefan/Desktop/MATE ROV 2023 /videosnapshot.png"
 
 #photogrammetry
-folder_path = "/Users/valeriefan/Desktop/materovip/test2"
+folder_path = "/Users/valeriefan/Desktop/materovip/official"

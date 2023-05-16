@@ -17,11 +17,12 @@ from ImageProcessing.Measure.Measuring import measurebowlie, resetMeasurebowl
 #GUI FUNCTIONS 
 import guiFuncs
 
+
 class GUIClass():
     def __init__(self):
         #basic setup 
         self.root = Tk()
-        self.root.geometry("1300x1000")
+        # self.root.geometry("1300x1000")
 
         #styling
         self.style =  ttk.Style()
@@ -31,6 +32,11 @@ class GUIClass():
         self.vrow = 1 #number of rows that the video feed needs to span, same reasoning as above 
 
         #video feed 
+        self.cap2 = None 
+        self.cap3 = None 
+        self.cap4 = None 
+        self.cap5 = None 
+
         self.cap = cv2.VideoCapture(0)
         if cv2.VideoCapture(1).isOpened():
             self.cap2 = cv2.VideoCapture(1)
@@ -64,7 +70,7 @@ class GUIClass():
         self.green_squares.grid(row = 2, column = self.vcol + 1, sticky = 'n')
         
         #measuring 
-        self.measure = Button(self.root, text = "Measure bowl", command = measurebowlie)
+        self.measure = Button(self.root, text = "Measure bowl", command = lambda: measurebowlie(self.frontcamera))
         self.measure.grid(row = 3, column = self.vcol + 1, sticky = 'n' )
 
         self.reset_measure = Button(self.root, text = "Reset Measuring", command = resetMeasurebowl)
@@ -74,7 +80,13 @@ class GUIClass():
         self.photogrammetryVideo = Button(self.root, text = "Collect Photogrammetry Dataset", command = lambda: guiFuncs.startPhotogrammetryVideo(self))
         self.photogrammetryVideo.grid(row = 5, column = self.vcol + 1, sticky = 'n')
 
-        
+        #photogrammetry 
+        self.manualmodel = Button(self.root, text = "Manual Model", command = guiFuncs.manualModel)
+        self.manualmodel.grid(row = 6, column = self.vcol + 1, sticky = 'n')
+
+        self.photogrammetrymodel = Button(self.root, text = "Photogrammetry Model", command = guiFuncs.photogrammetryModel)
+        self.photogrammetrymodel.grid(row = 7, column = self.vcol + 1, sticky = 'n')
+
         # #insert Button/Label 
 
 

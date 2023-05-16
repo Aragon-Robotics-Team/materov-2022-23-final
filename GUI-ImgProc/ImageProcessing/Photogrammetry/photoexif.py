@@ -47,12 +47,12 @@ def addExif(folder, img_name):
     print(img.has_exif)
     # sorted(img.list_all())
     
+    img.focal_length = 3.6
+    img.make = "opencv screenshot"
+    img.model = "zosi cctv"
     # img.focal_length = 3.6
     # img.make = "opencv screenshot"
     # img.model = "zosi cctv"
-    img.focal_length = 23
-    img.make = "IPhone"
-    img.model = "13"
     # print(f'Focal Length: {img.get("focal_length")}')
     print("set focal length, make, and model")
 
@@ -77,13 +77,14 @@ def takeVideo(cap):
         # folder_path = "/Users/valeriefan/Desktop/materovip/test2"
         folder_path = globalvars.folder_path
         cv2.imwrite(f"{folder_path}/{i}.JPG", frame)
-        cv2.imshow(f"{folder_path}/{i}.JPG", frame)
-        cv2.destroyAllWindows()
+        # cv2.imshow(f"{folder_path}/{i}.JPG", frame)
+        # cv2.destroyAllWindows()
         addExif(folder_path, f"{i}.JPG")
         i += 1
         if cv2.waitKey(1) == ord('q'):
-            videoCaptureObject.release()
+            # videoCaptureObject.release()
             cv2.destroyAllWindows()
+            print("end photogrammetry video")
             break
 
         # cv2.imwrite(f"C://Users//alexa//Desktop//potos//picture//{i}.png", frame)

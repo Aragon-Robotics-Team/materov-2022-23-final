@@ -17,7 +17,7 @@ class Robot:
         self.queue_in = queue_in
         self.queue_out = queue_out
         self.testing_queue = testing_queue
-        self.portNum = 21301
+        self.portNum = 1401
         self.baudRate = 9600
         self.delay = 0.1
         self.arduino = serial.Serial(port='COM3',

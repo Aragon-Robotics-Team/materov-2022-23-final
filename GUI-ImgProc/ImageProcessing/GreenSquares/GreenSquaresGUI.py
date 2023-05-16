@@ -26,7 +26,7 @@ import globalvars
 #Exit masking window 
 
 #---------------------
-def runGreenSquares(frontcamera, facetimecamera):
+def runGreenSquares(downcamera, facetimecamera):
     flags = [i for i in dir(cv2) if i.startswith('COLOR_')]
 
     result = True
@@ -34,8 +34,8 @@ def runGreenSquares(frontcamera, facetimecamera):
 
     i = 0
     while i == 0:
-        ret,frame = frontcamera.read()
-        cv2.imshow("Front Camera Feed", frame)
+        ret,frame = downcamera.read()
+        cv2.imshow("Bottom Camera Feed", frame)
         if cv2.waitKey(1) == ord('q'):
             cv2.destroyAllWindows()
             break
@@ -44,7 +44,7 @@ def runGreenSquares(frontcamera, facetimecamera):
             cv2.imshow(snapshots[i], frame)
             i+= 1
     while i == 1: 
-        facetimecamera.read()
+        ret,frame = facetimecamera.read()
         cv2.imshow("Facetime Camera Feed", frame)
         if cv2.waitKey(1) == ord('q'):
             cv2.destroyAllWindows()
